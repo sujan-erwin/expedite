@@ -1,0 +1,280 @@
+<div class="patientLookupForm">
+  <form id="patientLookupForm" name="patientLookupForm" [formGroup]="patientLookupForm" (ngSubmit)="onSubmit()">
+    <div class="appContainer" id="appContainer">
+      <div class="col-9">
+        <h1 id="lookup-heading" class="lookup-heading">Patient Lookup</h1>
+        <p id="patient-info" class="patient-info">Patient Lookup provides clinical documents. You can lookup either
+          using
+          Patient’s Account Number or Patient’s demographics</p>
+        <!-- Main Content with HBSID & Demographics -->
+
+        <!-- Error Banner -->
+
+        <div *ngIf="result.display" id="msgBanner" class="msgBanner" [ngClass]="[result.banner.type]">
+          <div id="title" class="title">
+            {{result.banner.title}}
+            <div *ngIf='result.displayDemosError'>
+              <button type="button" class="close-mark" aria-label="Close" (click)="closeBanner()">
+                <img id="close-img" class="close-img" src="assets/images/close-mark.png" alt="close-mark">
+              </button>
+            </div>
+          </div>
+          <div id="content" class="content" *ngIf="result.banner.displayResponseStatus">
+            {{result.banner.info}}. <span>
+              Please <a id="reset" (click)="onSubmit()"><span class="tryAgain">try again</span></a>
+            </span>
+          </div>
+          <div id="content" class="content" *ngIf='result.displayDemosError'>{{result.banner.multiplePatients}}
+            <span>
+              <a id="reset" href="javascript:void(0)" (click)="setradio('no-demo','HBS')">
+                <span class="tryAgain">Lookup by Patient account number</span>
+              </a>
+            </span>
+          </div>
+          <div id="content" class="content" *ngIf="result.displayHBSIDError">Change
+            <span>
+              <a id="reset" href="javascript:void(0)" (click)="setradio('hbs','HBS')">
+                <span class="tryAgain">Patient Account Number</span></a> and try again or try
+              <a id="reset" href="javascript:void(0)" (click)="setradio('yes-demo','demographic')">
+                <span class="tryAgain">Lookup by demographics</span></a>
+            </span>
+          </div>
+        </div>
+
+        <ng-template #noPatientFoundWithDemo let-modal>
+          <div class="modal-content" id="Demo-modal">
+            <div>
+              <button type="button" class="noPatientDemoClose" aria-label="Close" (click)="close()">
+                <img src="assets/images/close-mark.png" alt="close-mark">
+              </button>
+              <p class="noPatientDemoTitile modal-title" id="modal-basic-title">We were unable to locate records for
+                {{this.patientLookupForm.controls.firstName.value}} {{this.patientLookupForm.controls.lastName.value}}
+                based on
+                the demographics you entered.
+                <span class="termSearchValue"></span></p>
+            </div>
+            <div class="modal-body">
+              <p class="noPatientDemoBody">Please wait while we attempt to locate additional clinical documents which
+                may take up to xx minutes. Please retry your search with the exact demographics after that time.</p>
+              <p class="noPatientDemoBody1">No time to wait?</p>
+            </div>
+            <ul class="modal-notesList">
+              <li class="note1">Use the advanced search with the information entered, to retrieve a recent list of
+                documents available for manual review. Please note that search, sort and filter features will not be
+                available.
+              </li>
+              <li>Lookup another patient while you wait.</li>
+            </ul>
+            <div class="noPatientDemoSubmit modal-footer">
+              <div class="row">
+                <div class="col-lg-3" id="search">
+                  <input type="submit" id="advanced-search" class="advSearch" value="Use Advanced Search"
+                    (click)="advancedSearch()">
+                </div>
+                <div class="col-lg-3" id="search">
+                  <input type="submit" id="lookup-patient" class="lookupPatient" value="Lookup another patient"
+                    (click)="setradio('no-demo','HBS')">
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <fieldset class="form_fieldset_group">
+          <div class="row">
+            <div class="col-9 mt-4 PatientID">
+              <div class="form_fieldset_radio">
+                <input id="no-demo" type="radio" formControlName="patientLookUpOption" name="patientLookUpOption"
+                  value="HBS" checked='true' (change)="resetOptionValue()">
+                <label for='no-demo' id="no-demo">Lookup by Patient Account Number</label>
+              </div>
+            </div>
+          </div>
+          <!-- HBSID -->
+          <div class="row cvslookup">
+            <div class="col-9" style="padding-left: 40px;">
+              <ng-container *ngIf="patientLookUpOption.value ==='HBS'">
+                <div class="col-sm-6 cvstextfield" style="max-height:85px;">
+                  <label class="label">SPRx or HBS ID#</label>
+                  <input type="text" id="hbs" class="hbs"
+                    [ngClass]="{'error': (HBSID.touched && HBSID.invalid) || (HBSID.invalid && (!HBSID.pristine || isSubmitted)) }"
+                    maxlength="10" formControlName="HBSID" name="HBSID" (input)="restrictValue(HBSID, 'aphanumeric')">
+                  <span class="errorMessage"
+                    *ngIf="(HBSID.touched && HBSID.invalid) || (HBSID.invalid && (!HBSID.pristine || isSubmitted))">Required</span>
+                  </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <!-- Demographics -->
+          <div class="row">
+            <div class="col-9  mt-2 PatientID">
+              <div class="form_fieldset_radio">
+                <input id="yes-demo" #demographic type="radio" formControlName="patientLookUpOption"
+                  name="patientLookUpOption" value="demographic" (change)="resetOptionValue()">
+                <label for="yes-demo">Lookup by demographics</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12" style="margin-left: 40px;">
+              <ng-container *ngIf="patientLookUpOption.value ==='demographic'">
+                <div class="row cvslookup">
+                  <!-- First Name -->
+                  <div class="col-sm-3 cvstextfield">
+                    <label class="label" for='firstName'>First name</label>
+                    <input type="text" id="firstName" class="firstName" formControlName="firstName" maxlength="36"
+                      name="firstName"
+                      [ngClass]="{'error': (firstName.touched && firstName.invalid) || (firstName.invalid && (!firstName.pristine || isSubmitted))}">
+                    <span class="errorMessage"
+                      *ngIf="(firstName.touched && firstName.invalid) || (firstName.invalid && (!firstName.pristine || isSubmitted))">Required</span>
+                      <div class="hint"></div>
+                    </div>
+                  <!-- Last Name -->
+                  <div class="col-sm-3 cvstextfield">
+                    <label class="label" for='lastName'>Last name</label>
+                    <input type="text" id="lastName" class="lastName" formControlName="lastName" maxlength="36"
+                      name="lastName"
+                      [ngClass]="{'error': (lastName.touched && lastName.invalid) || (lastName.invalid && (!lastName.pristine || isSubmitted))}">
+                      <span class="errorMessage"
+                      *ngIf="(lastName.touched && lastName.invalid) || (lastName.invalid && (!lastName.pristine || isSubmitted))">Required</span>
+                      <div class="hint"> </div>
+                    </div>
+                  <!-- DOB -->
+                  <div class="col-sm-3 cvstextfield">
+                    <label class="label">Date of birth</label>
+                    <input type="text" id="dob" class="dob" formControlName="dob" (input)="maskDate($event)"
+                      datetime="MM/dd/YYYY" maxlength="10"
+                      [ngClass]="{'error': (dob.touched && dob.invalid) || (dob.invalid && (!dob.pristine || isSubmitted))}">
+                    <div class="hint">MM/DD/YYYY</div>
+                    <span class="errorMessage"
+                      *ngIf="(dob.touched ||(!dob.pristine || isSubmitted)) && dob.invalid && !dob.errors.invalidDate && dob.errors?.required">Required</span>
+                    <span id="dobInvalid" class="errorMessage" *ngIf="(dob.errors && dob.errors.invalidDate)">Incorrect
+                      Date</span>
+                  </div>
+                  <!-- ZipCode -->
+                  <div class="col-sm-2 cvsZipCode">
+                    <label class="label"  id="zipLable">Zip code</label>
+                    <input id="zipCode" type="text" class="zipCode" formControlName="zipCode" maxlength='5'
+                      (input)="restrictValue(zipCode, 'numeric')"
+                      [ngClass]="{'error': (zipCode.touched && zipCode.invalid) ||  zipCode.hasError('maxlength') || (zipCode.invalid && (!zipCode.pristine || isSubmitted)) }">
+                    <div class="hint">5 digits</div>
+                    <span class="errorMessage"
+                      *ngIf="(zipCode.touched && zipCode.invalid) || (zipCode.invalid && (!zipCode.pristine || isSubmitted))">Required</span>
+                  </div>
+                </div>
+                <!-- gender -->
+                <div class="row">
+                  <div class="col-12">
+                    <label class="label" id="gender">Gender</label>
+                    <div class="row reg-gender" style="margin-left: 0px;">
+                      <fieldset class="form_fieldset_form-group" style="display: contents;">
+                        <div class="form_fieldset_radio">
+                          <input id="male" type="radio" name="gender" value="M" formControlName="gender">
+                          <label id="maleLabel" for='male' style="width: 82px;"
+                            [ngClass]="{'error': (gender.touched && gender.invalid) || (gender.invalid && (!gender.pristine|| isSubmitted))}">Male</label>
+                        </div>
+                        <div class="form_fieldset_radio">
+                          <input id="female" type="radio" name="gender" value="F" formControlName="gender">
+                          <label id="femaleLabel" for='female' style="width: 92px;"
+                            [ngClass]="{'error': (gender.touched && gender.invalid) || (gender.invalid && (!gender.pristine || isSubmitted))}">Female</label>
+                        </div>
+                        <div class="form_fieldset_radio">
+                          <input id="notSpecified" type="radio" name="gender" value="NS" formControlName="gender">
+                          <label id="notSpecifiedLabel" for='notSpecified' style="width: 126px;"
+                            [ngClass]="{'error': (gender.touched && gender.invalid) || (gender.invalid && (!gender.pristine|| isSubmitted))}">Not
+                            specified</label>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <span id="gender-error" class="errorMessage"
+                      *ngIf="(gender.touched && gender.invalid) || (gender.invalid && (!gender.pristine|| isSubmitted))">Required</span>
+                  </div>
+                </div>
+                <!-- AddressLine -->
+                <div class="row cvslookup" style="margin-top: 18px;">
+                  <!-- AddressLine1 -->
+                  <div class="col-sm-3 cvstextfield">
+                    <label class="label">Address line1</label>
+                    <span [ngClass]="{'error': (addressline1.touched && addressline1.invalid) || (addressline1.invalid && !addressline1.pristine)}">
+                      <AutocompleteComponent tabIndex="1" (setAddress)="getAddress($event)" addressType="address"
+                        [addressline1]="addressline1.value"
+                        [showError]="(addressline1.touched && addressline1.invalid) || (addressline1.invalid && !addressline1.pristine)">
+                      </AutocompleteComponent>
+                    </span>
+                    <span class="errorMessage"
+                      *ngIf="(addressline1.touched && addressline1.invalid) || (addressline1.invalid && !addressline1.pristine)">Required</span>
+                  </div>
+                </div>
+                <div class="row cvslookup" style="margin-top: 18px;">
+                  <!-- Address line2-->
+                  <div class="col-sm-3 cvstextfield">
+                    <label class="label">Address line2 (optional)</label>
+                    <input type="text" id="addressline2" class="text-box" formControlName="addressline2" maxlength="50">
+                  </div>
+                  <!-- city -->
+                  <div class="col-sm-3 cvstextfield">
+                    <label class="label">City</label>
+                    <input type="text" id="city" class="text-box" formControlName="city" maxlength="46"
+                      [ngClass]="{'error': (city.touched && city.invalid) || (city.invalid && (!city.pristine || isSubmitted))}">
+                    <span class="errorMessage"
+                      *ngIf="(city.touched && city.invalid) || (city.invalid && (!city.pristine || isSubmitted))">Required</span>
+                  </div>
+                  <!-- State -->
+                  <div class="col-sm-3">
+                    <label class="label">State</label>
+                    <select id="state" class="state-dropdown" name="state" formControlName="state"
+                      [ngClass]="{'error': (state.touched && state.invalid) || (state.invalid && (!state.pristine || isSubmitted))}">
+                      <option [ngValue]="null">Select</option>
+                      <option *ngFor="let state of stateList" [ngValue]="state.name">
+                        {{state.name}}
+                      </option>  
+                    </select>
+                    <span class="errorMessage"
+                      *ngIf="(state.touched && state.invalid) || (state.invalid && (!state.pristine || isSubmitted))">Required</span>
+                  </div>
+                </div>
+                <div class="row cvslookup" style="margin-top: 18px;">
+                  <!-- Phone Validation -->
+                  <div class="col-sm-3 cvstextfield">
+                    <label class="label">Phone (Optional)</label>
+                    <input type="text" id="phone" class="phone"  formControlName="phone"
+                      (input)="restrictValue(phone, 'numeric')"
+                      [ngClass]="{'error': (phone.touched && phone.invalid) || (phone.invalid && !phone.pristine)}"
+                       mask="000-000-0000"  minlength="10" maxlength="12">
+                    <span id="phInvalid" class="errorMessage" *ngIf="(phone.invalid)">Invalid phone number</span>
+                  </div>
+                  <div class="col-sm-3 cvsNPI">
+                    <label id="npi-number" class="label">Provider's NPI Number (optional)</label>
+                    <input type="text" id="NPI" class="NPI"  formControlName="NPI"
+                      (input)="restrictValue(NPI, 'numeric')" maxlength="10">
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </fieldset>
+        <div  class="row">
+          <div  class="col-lg-3 search-Button" id="search">
+            <input tabIndex="1" type="submit" id="lookup-patient" value="Lookup patient">
+          </div>
+          <div  class="col-lg-3 clear-link" id="reset">
+            <div tabIndex="2" class="clearLink"><a id="reset" (click)="clearSearch()">Clear</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-3" style="margin-left: 62rem;	margin-top: -44rem;">
+      <div class="line">
+        <h2 class="advanced-search">Advanced search</h2>
+        <div class="adv-textnormal"><p class="advanced-search-may">Advanced search may require a few minutes to search for and
+          return clinical documents from a provider's medical record system.</p></div>
+          <div class="search-normal"><a (click)="advStartSearch()">
+          <label tabIndex="3" class="start-search">Start search
+          </label>
+        </a></div>
+      </div>
+    </div>
+  </form>
+</div>
