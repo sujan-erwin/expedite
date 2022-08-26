@@ -1,0 +1,1779 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- saved from url=(0045)file:///Users/z256588/Documents/Epic_CCD.html -->
+<html xmlns:in="urn:lantana-com:inline-variable-data" xmlns:n1="urn:hl7-org:v3"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+<!-- Do NOT edit this HTML directly: it was generated via an XSLT transformation from a CDA Release 2 XML document. -->
+<title>Clinical Summary</title>
+<style type="text/css">
+body {
+  color: #003366;
+  background-color: #FFFFFF;
+  font-family: Verdana, Tahoma, sans-serif;
+  font-size: 11px;
+}
+
+a {
+  color: #003366;
+  background-color: #FFFFFF;
+}
+
+h1 {
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 11pt;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+h4 {
+  font-size: 8pt;
+  font-weight: bold;
+}
+
+
+table {
+  line-height: 10pt;
+  width: 100%;
+}
+
+th {
+  background-color: #ffd700;
+}
+
+td {
+  padding: 0.1cm 0.2cm;
+  vertical-align: top;
+  background-color: #ffffcc;
+}
+
+.h1center {
+  font-size: 12pt;
+  font-weight: bold;
+  text-align: center;
+  width: 80%;
+}
+
+.header_table{
+  border: 1pt inset #00008b;
+}
+
+.td_label{
+  font-weight: bold;
+  color: white;
+}
+
+.td_header_role_name{
+  width: 20%;
+  background-color: #3399ff;
+}
+
+.td_header_role_value{
+  width: 80%;
+  background-color: #ccccff;
+}
+
+.Bold{
+  font-weight: bold;
+}
+
+.Italics{
+  font-style: italic;
+}
+
+.Underline{
+  text-decoration:underline;
+}
+
+@media print {
+    .hide-in-print {
+        display: none !important;
+    }
+    .printfooter {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      font-size: 7px;
+      font-weight: bold;
+      height: auto;
+      color: black;
+    }
+
+    table {
+    border-collapse: collapse; 
+    line-height: 10pt;
+    width: 100%;
+    border: 0.5pt inset #00008b;
+    }
+
+    th {
+      border-spacing: 0;
+      border: 0.5pt inset #a09f9f;
+      }
+
+    td {
+      border-spacing: 0;
+      border: 0.5pt inset #a09f9f;
+     
+    }
+    tr { 
+      border-spacing: 0;
+      border: 0.5pt inset #a09f9f;
+      
+      }
+  }
+          </style>
+<script>
+   function PrintElem(elem)
+    {
+        printCode();
+        let currentItem = elem.target.parentElement;
+         if(currentItem.firstElementChild.innerText != 'Print'){
+          currentItem.firstElementChild.classList.remove('hide-in-print');
+        }
+        let currentSection = currentItem.nextElementSibling;
+        currentSection.classList.remove('hide-in-print');
+        setTimeout(() => window.print());
+        window.onafterprint = () => {
+        document.querySelectorAll(".printfooter").forEach(el => el.remove())};
+        
+    }
+    function printSelectedSections() {
+        var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
+        printCode();
+        for (let checkbox of checkboxes) {
+          let elem = document.querySelector('[name=' + checkbox.value.substr(1) + ']');
+          let currentItem = elem;
+          currentItem.classList.remove('hide-in-print');
+          let currentItemParent = elem.parentElement;
+          let currentSection = currentItemParent.nextElementSibling;
+          currentSection.classList.remove('hide-in-print');
+        }
+        setTimeout(() => window.print());
+        window.onafterprint = () => {
+        document.querySelectorAll(".printfooter").forEach(el => el.remove())};
+    }
+    function printCode(){
+        let body = document.body;
+        for(let child of body.children) {
+            child.classList.add('hide-in-print')
+        }
+        var headers = document.querySelectorAll('h1');
+        for (let head of headers){
+          let currentItem = head;
+          currentItem.classList.remove('hide-in-print');
+         }
+         var headers = document.querySelectorAll('h3');
+         for (let header of headers){
+          for(let child of header.children) {
+              child.classList.add('hide-in-print');
+          }
+          header.classList.remove('hide-in-print');
+        }
+        var tables = document.querySelectorAll('table');
+         for (let table of tables){
+          let currentItem = table;
+          if(currentItem.innerText.includes('Date of birth')){
+          currentItem.classList.remove('hide-in-print');
+          
+          var alltr = table.querySelectorAll('tr');
+          
+          for ( let tr of alltr){
+            if(!tr.classList.contains('footer')){
+            for(let cell of tr.cells){
+              var footerString;
+              if(cell.innerText == 'Patient') {
+                //footerString =  cell.innerText +':'+  cell.nextElementSibling.innerText;
+                footerString =  'Pt: ' + cell.nextElementSibling.innerText;
+               break;
+              } else if (cell.innerText == 'Date of birth' ){
+                //footerString =  footerString + ', ' + cell.innerText +':'+  cell.nextElementSibling.innerText;
+                footerString =  footerString + ',  DOB:' +  cell.nextElementSibling.innerText;
+              }
+            }
+            }
+          }
+         if(footerString.length != 0){
+            var f = document.createElement("FOOTER");
+            f.innerText= footerString;
+            f.classList.add('printfooter');
+            document.body.appendChild(f);
+          }
+          } else if (currentItem.innerText.includes('Performer') || currentItem.innerText.includes('Document maintained by')){
+            currentItem.classList.remove('hide-in-print');
+          }
+         }
+         }
+ function selectAll() {
+
+
+
+}
+    </script>
+</head>
+<body>
+<h1 class="h1center">Clinical Summary</h1>
+<table class="header_table">
+<tbody><tr>
+<td class="td_header_role_name"><span class="td_label">Patient</span></td><td class="td_header_role_value">Name LName</td>
+</tr>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Date of birth</span></td><td class="td_header_role_value">January 1, 1900 </td>
+</tr>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Sex</span></td><td class="td_header_role_value">Male</td>
+</tr>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Race</span></td><td class="td_header_role_value"></td>
+</tr>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Ethnicity</span></td><td class="td_header_role_value"></td>
+</tr>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Contact info</span></td><td class="td_header_role_value"> Primary Home:<br>street address<br>city,&nbsp;OH&nbsp;12345,&nbsp;US<br>Tel (Primary Home):  +1-555-555-5555<br>Tel (Mobile Contact):  +1-555-555-5555<br>Email:  email@email.com<br>Email:  email@email.com<br>
+</td>
+</tr>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Patient IDs</span></td><td class="td_header_role_value">123456789 1.2.840.114350.1.13.172.2.7.5.737384.100<br>
+</td>
+</tr>
+</tbody></table>
+<table class="header_table">
+<tbody>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Document Id</span></td><td class="td_header_role_value"> 1.2.840.114350.1.13.172.2.7.8.688883.219873005</td>
+</tr>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Document Created:</span></td><td class="td_header_role_value">December 11, 2019, 12:52:30, EST </td>
+</tr>
+</tbody>
+</table>
+<table class="header_table">
+<tbody>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Performer (primary care physician)</span></td><td class="td_header_role_value">Name LastName, MD</td>
+</tr>
+</tbody>
+</table>
+<table class="header_table">
+<tbody>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Author</span></td><td class="td_header_role_value">Epic - Version 8.8</td>
+</tr>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Contact info</span></td><td class="td_header_role_value">
+<br>
+<br>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="header_table">
+<tbody>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Emergency contact</span></td><td class="td_header_role_value">Name Name2<br>
+</td>
+</tr>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Contact info</span></td><td class="td_header_role_value">
+<br>Tel (Primary Home):  +1-555-555-5555<br>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="header_table">
+<tbody>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Document maintained by</span></td><td class="td_header_role_value">Organization Name</td>
+</tr>
+<tr>
+<td class="td_header_role_name"><span class="td_label">Contact info</span></td><td class="td_header_role_value"> Work Place:<br>123 Street Name<br>TownName,&nbsp;OH&nbsp;12345<br>
+<br>
+</td>
+</tr>
+</tbody>
+</table>
+<h2>
+<a name="toc">Table of Contents</a>
+</h2>
+<ul>
+<li>
+<a href="file:///Users/z256588/Documents/Epic_CCD.html#N66006">Allergies</a><input type="checkbox" name="sectionsToPrint" value="#N66006">
+</li>
+<li>
+<a href="file:///Users/z256588/Documents/Epic_CCD.html#N66614">Medications</a><input type="checkbox" name="sectionsToPrint" value="#N66614">
+</li>
+<li>
+<a href="file:///Users/z256588/Documents/Epic_CCD.html#N73890">Active Problems</a><input type="checkbox" name="sectionsToPrint" value="#N73890">
+</li>
+<li>
+<a href="file:///Users/z256588/Documents/Epic_CCD.html#N78962">            Resolved Problems          </a><input type="checkbox" name="sectionsToPrint" value="#N78962">
+</li>
+<li>
+<a href="file:///Users/z256588/Documents/Epic_CCD.html#N79321">Encounters</a><input type="checkbox" name="sectionsToPrint" value="#N79321">
+</li>
+<li>
+<a href="file:///Users/z256588/Documents/Epic_CCD.html#N89061">Social History</a><input type="checkbox" name="sectionsToPrint" value="#N89061">
+</li>
+<li>
+<a href="file:///Users/z256588/Documents/Epic_CCD.html#N89789">Last Filed Vital Signs</a><input type="checkbox" name="sectionsToPrint" value="#N89789">
+</li>
+<li>
+<a href="file:///Users/z256588/Documents/Epic_CCD.html#N90451">Plan of Treatment</a><input type="checkbox" name="sectionsToPrint" value="#N90451">
+</li>
+<li>
+<a href="file:///Users/z256588/Documents/Epic_CCD.html#N91235">Procedures</a><input type="checkbox" name="sectionsToPrint" value="#N91235">
+</li>
+<li>
+<a href="file:///Users/z256588/Documents/Epic_CCD.html#N94939">Results</a><input type="checkbox" name="sectionsToPrint" value="#N94939">
+</li>
+<li>
+<a href="file:///Users/z256588/Documents/Epic_CCD.html#N104858">            Insurance          </a><input type="checkbox" name="sectionsToPrint" value="#N104858">
+</li>
+</ul>
+<button onclick="printSelectedSections()">Print Selected Sections</button><button id="select-all" onclick="selectAll()">Select All</button><button id="clear-all" onclick="clearAll()">Clear All</button>
+<hr align="left" color="teal" size="2">
+<h3>
+<a name="N66006" href="file:///Users/z256588/Documents/Epic_CCD.html#toc">Allergies</a> <button onclick="PrintElem(event)">Print</button>
+</h3>
+<div>            
+<table>              
+<colgroup>                
+<col span="2" width="25%">                
+<col width="13%">                
+<col width="12%">                
+<col width="25%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Active Allergy</th>                  <th>Reactions</th>                  <th>Severity</th>                  <th>Noted Date</th>                  <th>Comments</th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr id="allergy2">                  
+<td id="allergy2allergen">Etanercept</td>                  <td></td>                  <td id="allergy2severity"></td>                  <td>08/28/2019</td>                  <td id="allergy2comments"></td>                
+</tr>                
+<tr id="allergy3">                  
+<td id="allergy3allergen">Epinephrine</td>                  <td></td>                  <td id="allergy3severity"></td>                  <td>02/02/2006</td>                  <td id="allergy3comments">                    
+<p>Other reaction(s): Intolerance</p>                    
+<p>Mouth turns blue, palpitations</p>                    
+<p></p>                  
+</td>                
+</tr>              
+</tbody>            
+</table>          
+</div>
+<h3>
+<a name="N66614" href="file:///Users/z256588/Documents/Epic_CCD.html#toc">Medications</a> <button onclick="PrintElem(event)">Print</button>
+</h3>
+<div>            
+<table>              
+<colgroup>                
+<col span="2" width="25%">                
+<col width="13%">                
+<col width="12%">                
+<col span="2" width="8%">                
+<col width="9%">              
+<col width="20%">
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Medication</th>                  <th>Sig</th>                  <th>Dispensed</th>                  <th>Refills</th>                  <th>Start Date</th>                  <th>End Date</th>                  <th>Status</th>                <th>Prescriber</th>
+</tr>              
+</thead>              
+<tbody>                
+<tr id="currx5" class="normrow">                  
+<td>                    
+<p>                      ipratropium-albuterol (COMBIVENT RESPIMAT) 20-100 MCG/ACT Aero Soln inhaler                    </p>                  
+</td>                  <td id="sig5">Inhale.</td>                  <td></td>                  <td>0</td>                  <td>02/02/2006</td>                  <td></td>                  <td>Active</td>                <td> &nbsp; Historical &nbsp; Provider</td>
+</tr>                
+<tr id="currx6" class="altrow">                  
+<td>                    
+<p>clonazePAM 0.5 MG Tab tablet</p>                  
+</td>                  <td id="sig6">TAKE 1 TABLET BY MOUTH THREE TIMES A DAY AS NEEDED</td>                  <td></td>                  <td>3</td>                  <td>08/03/2019</td>                  <td></td>                  <td>Active</td>                <td> &nbsp;  &nbsp; </td>
+</tr>                
+<tr id="currx7" class="normrow">                  
+<td>                    
+<p>                      albuterol (VENTOLIN HFA) 108 (90 Base) MCG/ACT Aero Soln inhaler                    </p>                  
+</td>                  <td id="sig7">                    Inhale 1 puff every 6 hours as needed for Wheezing.                  </td>                  <td></td>                  <td>0</td>                  <td></td>                  <td></td>                  <td>Active</td>                <td> &nbsp;  &nbsp; </td>
+</tr>                
+<tr id="currx8" class="altrow">                  
+<td>                    
+<p>                      Black Pepper-Turmeric (TURMERIC CURCUMIN) 5-1000 MG Cap                    </p>                  
+</td>                  <td id="sig8">Take by mouth.</td>                  <td></td>                  <td>0</td>                  <td></td>                  <td></td>                  <td>Active</td>                <td> &nbsp;  &nbsp; </td>
+</tr>                
+<tr id="currx9" class="normrow">                  
+<td>                    
+<p>OMEGA-3 FATTY ACIDS PO</p>                  
+</td>                  <td id="sig9">Take by mouth.</td>                  <td></td>                  <td>0</td>                  <td></td>                  <td></td>                  <td>Active</td>                <td> &nbsp;  &nbsp; </td>
+</tr>                
+<tr id="currx10" class="altrow">                  
+<td>                    
+<p>folic acid 1 MG Tab tablet</p>                    
+<span class="allIndent">                      Indications:                      <span>Psoriatic arthritis</span>                      ,                      <span>Methotrexate, long term, current use</span>                      ,                      <span>Long-term use of high-risk medication</span>                      ,                      <span>                        Long term current use of non-steroidal anti-inflammatories (NSAID)                      </span>                      ,                      <span>History of psoriatic arthritis</span>                      ,                      <span>Fatigue, unspecified type</span>                      ,                      <span>                        Asthma, unspecified asthma severity, unspecified whether complicated, unspecified whether                        persistent                      </span>                      ,                      <span>Paresthesia of both hands</span>                      ,                      <span>Dorsalgia</span>                      ,                      <span>Cervicalgia</span>                      ,                      <span>Bilateral carpal tunnel syndrome</span>                      ,                      <span>Weakness of both hands</span>                      ,                      <span>Tendonitis of both rotator cuffs</span>                      ,                      <span>Subacromial bursitis</span>                      ,                      <span>Right elbow pain</span>                      ,                      <span>Hip pain, left</span>                      ,                      <span>Hip flexor tendonitis, left</span>                      ,                      <span>Disorder of bone and cartilage</span>                      ,                      <span>Chronic pain of both shoulders</span>                      ,                      <span>Bilateral wrist pain</span>                      ,                      <span>Bilateral hand pain</span>                      ,                      <span>Bilateral biceps tendonitis</span>                    </span>                  </td>                  <td id="sig10">1 po q day</td>                  <td>                    
+<p>30 tablet</p>                  
+</td>                  <td>11</td>                  <td>08/28/2019</td>                  <td></td>                  <td>Active</td>                <td>MD &nbsp; DoctorName &nbsp; DoctorName2</td>
+</tr>                
+<tr id="currx33" class="normrow">                  
+<td>                    
+<p>sulindac 200 MG Tab</p>                    
+<span class="allIndent">                      Indications:                      <span>Psoriatic arthritis</span>                      ,                      <span>Methotrexate, long term, current use</span>                      ,                      <span>Long-term use of high-risk medication</span>                      ,                      <span>                        Long term current use of non-steroidal anti-inflammatories (NSAID)                      </span>                      ,                      <span>History of psoriatic arthritis</span>                      ,                      <span>Fatigue, unspecified type</span>                      ,                      <span>                        Asthma, unspecified asthma severity, unspecified whether complicated, unspecified whether                        persistent                      </span>                      ,                      <span>Paresthesia of both hands</span>                      ,                      <span>Dorsalgia</span>                      ,                      <span>Cervicalgia</span>                      ,                      <span>Bilateral carpal tunnel syndrome</span>                      ,                      <span>Weakness of both hands</span>                      ,                      <span>Tendonitis of both rotator cuffs</span>                      ,                      <span>Subacromial bursitis</span>                      ,                      <span>Right elbow pain</span>                      ,                      <span>Hip pain, left</span>                      ,                      <span>Hip flexor tendonitis, left</span>                      ,                      <span>Disorder of bone and cartilage</span>                      ,                      <span>Chronic pain of both shoulders</span>                      ,                      <span>Bilateral wrist pain</span>                      ,                      <span>Bilateral hand pain</span>                      ,                      <span>Bilateral biceps tendonitis</span>                    </span>                  </td>                  <td id="sig33">1 po bid PRN</td>                  <td>                    
+<p>60 tablet</p>                  
+</td>                  <td>11</td>                  <td>08/28/2019</td>                  <td></td>                  <td>Active</td>                <td> &nbsp;  &nbsp; </td>
+</tr>                
+<tr id="currx56" class="altrow">                  
+<td>                    
+<p>                      Elastic Bandages &amp; Supports WRIST SPLINT ELASTIC/LARGE-XL Misc                    </p>                    
+<span class="allIndent">                      Indications:                      <span>Psoriatic arthritis</span>                      ,                      <span>Methotrexate, long term, current use</span>                      ,                      <span>Long-term use of high-risk medication</span>                      ,                      <span>                        Long term current use of non-steroidal anti-inflammatories (NSAID)                      </span>                      ,                      <span>History of psoriatic arthritis</span>                      ,                      <span>Fatigue, unspecified type</span>                      ,                      <span>                        Asthma, unspecified asthma severity, unspecified whether complicated, unspecified whether                        persistent                      </span>                      ,                      <span>Paresthesia of both hands</span>                      ,                      <span>Dorsalgia</span>                      ,                      <span>Cervicalgia</span>                      ,                      <span>Bilateral carpal tunnel syndrome</span>                      ,                      <span>Weakness of both hands</span>                      ,                      <span>Tendonitis of both rotator cuffs</span>                      ,                      <span>Subacromial bursitis</span>                      ,                      <span>Right elbow pain</span>                      ,                      <span>Hip pain, left</span>                      ,                      <span>Hip flexor tendonitis, left</span>                      ,                      <span>Disorder of bone and cartilage</span>                      ,                      <span>Chronic pain of both shoulders</span>                      ,                      <span>Bilateral wrist pain</span>                      ,                      <span>Bilateral hand pain</span>                      ,                      <span>Bilateral biceps tendonitis</span>                    </span>                  </td>                  <td id="sig56">B/L wrist splints for B/L CTS</td>                  <td>                    
+<p>2 Each</p>                  
+</td>                  <td>11</td>                  <td>08/28/2019</td>                  <td></td>                  <td>Active</td>                <td> &nbsp;  &nbsp; </td>
+</tr>                
+<tr id="currx83" class="normrow">                  
+<td>                    
+<p>methotrexate 2.5 MG Tab</p>                    
+<span class="allIndent">                      Indications:                      <span>Methotrexate, long term, current use</span>                      ,                      <span>Psoriatic arthritis</span>                    </span>                  </td>                  <td id="sig83">6 po one day a week.</td>                  <td>                    
+<p>30 tablet</p>                  
+</td>                  <td>5</td>                  <td>10/30/2019</td>                  <td></td>                  <td>Active</td>                <td> &nbsp;  &nbsp; </td>
+</tr>                
+<tr id="currx86" class="altrow">                  
+<td>                    
+<p>                      Adalimumab (HUMIRA PEN) 40 MG/0.4ML Pen-injector Kit citrate free                    </p>                    
+<span class="allIndent">                      Indications:                      <span>Psoriatic arthritis</span>                      ,                      <span>Long-term use of high-risk medication</span>                      ,                      <span>Methotrexate, long term, current use</span>                    </span>                  </td>                  <td id="sig86">40 mg injection every 2 weeks</td>                  <td>                    
+<p>2 Each</p>                  
+</td>                  <td>11</td>                  <td>11/21/2019</td>                  <td></td>                  <td>Active</td>                <td> &nbsp;  &nbsp; </td>
+</tr>                
+<tr id="currx79" class="historical normrow">                  
+<td>                    
+<p>                      Adalimumab (HUMIRA PEN) 40 MG/0.4ML Pen-injector Kit citrate free                    </p>                    
+<span class="allIndent">                      Indications:                      <span>Psoriatic arthritis</span>                      ,                      <span>Long-term use of high-risk medication</span>                      ,                      <span>Methotrexate, long term, current use</span>                    </span>                  </td>                  <td id="sig79">40 mg injection every 2 weeks</td>                  <td>                    
+<p>2 Each</p>                  
+</td>                  <td>11</td>                  <td>10/23/2019</td>                  <td>11/19/2019</td>                  <td>                    Discontinued                    <span>(Reorder)</span>                  </td>                <td> &nbsp;  &nbsp; </td>
+</tr>              
+</tbody>            
+</table>          
+</div>
+<h3>
+<a name="N73890" href="file:///Users/z256588/Documents/Epic_CCD.html#toc">Active Problems</a> <button onclick="PrintElem(event)">Print</button>
+</h3>
+<div>            
+<table>              
+<colgroup>
+<col width="10%">                
+<col width="75%">                
+<col width="25%">              
+</colgroup>              
+<thead>                
+<tr>
+<th>ICD10-CM Code</th>                  <th>Problem</th>                  <th>Noted Date</th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr>
+<td>R94.4</td>                  <td id="problem112name">Abnormal renal function                    test                  </td>                  <td>10/23/2019</td>                
+</tr>                
+<tr>
+<td>M19.041</td>                  <td id="problem113name">Osteoarthritis of both                    hands                  </td>                  <td>10/23/2019</td>                
+</tr>                
+<tr>
+<td>M41.9</td>                  <td id="problem114name">Scoliosis of lumbar spine</td>                  <td>                    10/23/2019                  </td>                
+</tr>                
+<tr>
+<td>M47.816</td>                  <td id="problem115name">Osteoarthritis of lumbar                    spine                  </td>                  <td>10/23/2019</td>                
+</tr>                
+<tr>
+<td>M51.36</td>                  <td id="problem116name">Lumbar degenerative disc                    disease                  </td>                  <td>10/23/2019</td>                
+</tr>                
+<tr>
+<td>M50.30</td>                  <td id="problem117name">DDD (degenerative disc disease),                    cervical                  </td>                  <td>10/23/2019</td>                
+</tr>                
+<tr>
+<td>M47.812</td>                  <td id="problem118name">Osteoarthritis cervical                    spine                  </td>                  <td>10/23/2019</td>                
+</tr>                
+<tr>
+<td>G56.23</td>                  <td id="problem119name">Ulnar neuropathy of both upper                    extremities                  </td>                  <td>10/23/2019</td>                
+</tr>                
+<tr>
+<td>R53.83</td>                  <td id="problem91name">Fatigue</td>                  <td>                    08/28/2019                  </td>                
+</tr>                
+<tr>
+<td>M89.9</td>                  <td id="problem92name">Disorder of bone and                    cartilage                  </td>                  <td>08/28/2019</td>                
+</tr>                
+<tr>
+<td>J45.909</td>                  <td id="problem93name">Asthma</td>                  <td>                    08/28/2019                  </td>                
+</tr>                
+<tr>
+<td>Z79.1</td>                  <td id="problem94name">                    Long term current use of non-steroidal anti-inflammatories (NSAID)                  </td>                  <td>08/28/2019</td>                
+</tr>                
+<tr>
+<td>Z87.2</td>                  <td id="problem95name">History of psoriatic                    arthritis                  </td>                  <td>08/28/2019</td>                
+</tr>                
+<tr>
+<td>M54.2</td>                  <td id="problem96name">Cervicalgia</td>                  <td>                    08/28/2019                  </td>                
+</tr>                
+<tr>
+<td>M54.9</td>                  <td id="problem97name">Dorsalgia</td>                  <td>                    08/28/2019                  </td>                
+</tr>                
+<tr>
+<td>M25.511</td>                  <td id="problem98name">Chronic pain of both                    shoulders                  </td>                  <td>08/28/2019</td>                
+</tr>                
+<tr>
+<td>M75.21</td>                  <td id="problem99name">Bilateral biceps tendonitis</td>                  <td>                    08/28/2019                  </td>                
+</tr>                
+<tr>
+<td>M75.50</td>                  <td id="problem100name">Subacromial bursitis</td>                  <td>                    08/28/2019                  </td>                
+</tr>                
+<tr>
+<td>M75.81</td>                  <td id="problem101name">Tendonitis of both rotator                    cuffs                  </td>                  <td>08/28/2019</td>                
+</tr>                
+<tr>
+<td>M25.521</td>                  <td id="problem102name">Right elbow                    pain                  </td>                  <td>08/28/2019</td>                
+</tr>                
+<tr>
+<td>L40.50</td>                  <td id="problem103name">Psoriatic arthritis</td>                  <td>                    08/28/2019                  </td>                
+</tr>                
+<tr>
+<td>M25.531</td>                  <td id="problem104name">Bilateral wrist pain</td>                  <td>                    08/28/2019                  </td>                
+</tr>                
+<tr>
+<td>M79.641</td>                  <td id="problem105name">Bilateral hand pain</td>                  <td>                    08/28/2019                  </td>                
+</tr>                
+<tr>
+<td>R29.898</td>                  <td id="problem106name">Weakness of both hands</td>                  <td>                    08/28/2019                  </td>                
+</tr>                
+<tr>
+<td>R20.2</td>                  <td id="problem107name">Paresthesia of both hands</td>                  <td>                    08/28/2019                  </td>                
+</tr>                
+<tr>
+<td>M25.552</td>                  <td id="problem108name">Hip pain, left</td>                  <td>                    08/28/2019                  </td>                
+</tr>                
+<tr>
+<td>M76.892</td>                  <td id="problem109name">Hip flexor tendonitis,                    left                  </td>                  <td>08/28/2019</td>                
+</tr>                
+<tr>
+<td>Z79.899</td>                  <td id="problem110name">Long-term use of high-risk                    medication                  </td>                  <td>08/28/2019</td>                
+</tr>                
+<tr>
+<td>Z79.899</td>                  <td id="problem111name">Methotrexate, long term,                    current use                  </td>                  <td>08/28/2019</td>                
+</tr>              
+</tbody>            
+</table>          
+</div>
+<h3>
+<a name="N78962" href="file:///Users/z256588/Documents/Epic_CCD.html#toc">            Resolved Problems          </a> <button onclick="PrintElem(event)">Print</button>
+</h3>
+<div>            
+<table>              
+<colgroup>                
+<col width="75%">                
+<col width="12%">                
+<col width="13%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Problem</th>                  <th>Noted Date</th>                  <th>Resolved Date</th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr id="problem121" class="normRow">                  
+<td id="problem121name">Bilateral carpal tunnel syndrome</td>                  <td>                    08/28/2019                  </td>                  <td>10/23/2019</td>                
+</tr>                
+<tr id="problem122" class="altRow">                  
+<td id="problem122name">Long term current use of systemic                    steroids                  </td>                  <td>08/28/2019</td>                  <td>08/28/2019</td>                
+</tr>              
+</tbody>            
+</table>          
+</div>
+<h3>
+<a name="N79321" href="file:///Users/z256588/Documents/Epic_CCD.html#toc">Encounters</a> <button onclick="PrintElem(event)">Print</button>
+</h3>
+<div>            
+<table>              
+<colgroup>                
+<col width="10%">                
+<col width="15%">                
+<col span="3" width="25%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Date</th>                  <th>Type</th>                  <th>Specialty</th>                  <th>Care                    Team                  </th>                  <th>Description</th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr id="encounter124" class="normRow">                  
+<td>11/25/2019</td>                  <td id="encounter124type">                    Travel                  </td>                  <td></td>                  <td></td>                  <td></td>                
+</tr>                
+<tr id="encounter125" class="altRow">                  
+<td>10/30/2019</td>                  <td id="encounter125type">                    Telephone                  </td>                  <td id="encounter125specialty">Rheumatology</td>                  <td>                    
+<p>Doctor Name2</p>                  
+</td>                  <td id="encounter125desc">Medication Management</td>                
+</tr>                
+<tr id="encounter128" class="normRow">                  
+<td>10/30/2019</td>                  <td id="encounter128type">                    Telephone                  </td>                  <td id="encounter128specialty">Rheumatology</td>                  <td>                    
+<p>Doctor Name3</p>                  
+</td>                  <td id="encounter128desc">Medication Management (Methotrexate )</td>                
+</tr>                
+<tr id="encounter129" class="altRow">                  
+<td>10/28/2019</td>                  <td id="encounter129type">                    Telephone                  </td>                  <td id="encounter129specialty">Rheumatology</td>                  <td>                    
+<p>Doctor Name3</p>                  
+</td>                  <td id="encounter129desc">Insurance (Humira )</td>                
+</tr>                
+<tr id="encounter130" class="normRow">                  
+<td>10/25/2019</td>                  <td id="encounter130type">                    Telephone                  </td>                  <td id="encounter130specialty">Rheumatology</td>                  <td>                    
+<p>Doctor Name4</p>                  
+</td>                  <td id="encounter130desc">Other</td>                
+</tr>                
+<tr id="encounter132" class="altRow">                  
+<td>10/23/2019</td>                  <td id="encounter132type">Office                    Visit                  </td>                  <td id="encounter132specialty">Rheumatology</td>                  <td>                    
+<p>Doctor Name2</p>                  
+</td>                  <td id="encounter132desc">                    Psoriatic arthritis (Primary Dx);                    <br>                    Long term current use of non-steroidal anti-inflammatories (NSAID);                    <br>                    History of psoriatic arthritis;                    <br>                    Long-term use of high-risk medication;                    <br>                    Methotrexate, long term, current use;                    <br>                    Abnormal renal function test;                    <br>                    Ulnar neuropathy of both upper extremities;                    <br>                    Osteoarthritis of both hands, unspecified osteoarthritis type;                    <br>                    Scoliosis of lumbar spine, unspecified scoliosis type;                    <br>                    Osteoarthritis of lumbar spine, unspecified spinal osteoarthritis complication status;                    <br>                    Lumbar degenerative disc disease;                    <br>                    DDD (degenerative disc disease), cervical;                    <br>                    Osteoarthritis of cervical spine, unspecified spinal osteoarthritis complication status;                    <br>                    Fatigue, unspecified type;                    <br>                    Asthma, unspecified asthma severity, unspecified whether complicated, unspecified whether                    persistent;                    <br>                    Paresthesia of both hands;                    <br>                    Dorsalgia;                    <br>                    Cervicalgia;                    <br>                    Bilateral carpal tunnel syndrome;                    <br>                    Weakness of both hands;                    <br>                    Tendonitis of both rotator cuffs;                    <br>                    Subacromial bursitis;                    <br>                    Right elbow pain;                    <br>                    Hip pain, left;                    <br>                    Hip flexor tendonitis, left;                    <br>                    Disorder of bone and cartilage;                    <br>                    Chronic pain of both shoulders;                    <br>                    Bilateral wrist pain;                    <br>                    Bilateral hand pain;                    <br>                    Bilateral biceps tendonitis                  </td>                
+</tr>                
+<tr id="encounter131" class="normRow">                  
+<td>10/23/2019</td>                  <td id="encounter131type">                    Travel                  </td>                  <td></td>                  <td></td>                  <td></td>                
+</tr>                
+<tr id="encounter163" class="altRow">                  
+<td>09/25/2019</td>                  <td id="encounter163type">Letter                    (Out)                  </td>                  <td id="encounter163specialty"></td>                  <td>                    
+<p>Doctor Name5</p>                  
+</td>                  <td></td>                
+</tr>                
+<tr id="encounter164" class="normRow">                  
+<td>09/25/2019</td>                  <td id="encounter164type">                    Travel                  </td>                  <td></td>                  <td></td>                  <td></td>                
+</tr>                
+<tr id="encounter165" class="altRow">                  
+<td>09/13/2019</td>                  <td id="encounter165type">                    Telephone                  </td>                  <td id="encounter165specialty">Rheumatology</td>                  <td>                    
+<p>Doctor Name4</p>                  
+</td>                  <td id="encounter165desc">Results</td>                
+</tr>                
+<tr id="encounter167" class="normRow">                  
+<td>09/12/2019</td>                  <td id="encounter167type">                    Hospital Encounter                  </td>                  <td id="encounter167specialty">Multispecialty</td>                  <td>                    
+<p>Doctor Name6</p>                  
+</td>                  <td></td>                
+</tr>                
+<tr id="encounter166" class="altRow">                  
+<td>09/12/2019</td>                  <td id="encounter166type">                    Travel                  </td>                  <td></td>                  <td></td>                  <td></td>                
+</tr>              
+</tbody>            
+</table>            from Last 3 Months          </div>
+<h3>
+<a name="N89061" href="file:///Users/z256588/Documents/Epic_CCD.html#toc">Social History</a> <button onclick="PrintElem(event)">Print</button>
+</h3>
+<div>            
+<table>              
+<colgroup>                
+<col span="2" width="25%">                
+<col width="13%">                
+<col width="12%">                
+<col width="25%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Tobacco Use</th>                  <th>Types</th>                  <th>Packs/Day</th>                  <th>Years Used</th>                  <th>                    Date                  </th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr>                  
+<td>Current Every Day Smoker</td>                  <td>Cigarettes</td>                  <td>1</td>                  <td></td>                  <td></td>                
+</tr>                
+<tr>                  
+<td>Smokeless Tobacco: Never Used</td>                  <td></td>                  <td colspan="2"></td>                  <td></td>                
+</tr>              
+</tbody>            
+</table>            
+<table>              
+<colgroup>                
+<col span="4" width="25%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Alcohol Use</th>                  <th>Drinks/Week</th>                  <th>oz/Week</th>                  <th>                    Comments                  </th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr>                  
+<td id="alcoholStatus">Never</td>                  <td></td>                  <td></td>                  <td></td>                
+</tr>              
+</tbody>            
+</table>            
+<table>              
+<colgroup>                
+<col width="50%">                
+<col width="30%">                
+<col width="20%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Alcohol Habits</th>                  <th>Answer</th>                  <th>Date Recorded</th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr>                  
+<td>How often do you have a drink containing alcohol?</td>                  <td>Never</td>                  <td>                    08/28/2019                  </td>                
+</tr>                
+<tr>                  
+<td>                    How many drinks containing alcohol do you have on a typical day when you are drinking?                  </td>                  <td>Not asked</td>                  <td></td>                
+</tr>                
+<tr>                  
+<td>                    How often do you have six or more drinks on one occasion?                  </td>                  <td>Not asked</td>                  <td></td>                
+</tr>              
+</tbody>            
+</table>            
+<table>              
+<colgroup>                
+<col width="25%">                
+<col width="75%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Sex Assigned at Birth</th>                  <th>Date Recorded</th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr id="BirthSex195">                  
+<td id="BirthSex195Value">Not on file</td>                  <td></td>                
+</tr>              
+</tbody>            
+</table>            
+<table>              
+<colgroup>                
+<col span="2" width="25%">                
+<col width="50%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Job Start Date</th>                  <th>Occupation</th>                  <th>Industry</th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr>                  
+<td>Not on file</td>                  <td id="sochist196">Not on file</td>                  <td id="sochist197">Not                    on file                  </td>                
+</tr>              
+</tbody>            
+</table>            
+<table>              
+<colgroup>                
+<col width="50%">                
+<col span="2" width="25%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Travel History</th>                  <th>Travel Start</th>                  <th>Travel End</th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr>                  
+<td>No recent travel history available.</td>                
+</tr>              
+</tbody>            
+</table>          
+</div>
+<h3>
+<a name="N89789" href="file:///Users/z256588/Documents/Epic_CCD.html#toc">Last Filed Vital Signs</a> <button onclick="PrintElem(event)">Print</button>
+</h3>
+<div>            
+<table>              
+<colgroup>                
+<col span="4" width="25%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Vital Sign</th>                  <th>Reading</th>                  <th>Time Taken</th>                  <th>Comments</th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr class="normRow">                  
+<td class="cellHeader">Blood Pressure</td>                  <td>                    <span>112</span>                    /                    <span>74</span>                  </td>                  <td>10/23/2019 12:51 PM EDT</td>                  <td></td>                
+</tr>                
+<tr class="altRow">                  
+<td class="cellHeader">Pulse</td>                  <td id="pulse_5642758260">73</td>                  <td>                    10/23/2019 12:51 PM EDT                  </td>                  <td></td>                
+</tr>                
+<tr class="normRow">                  
+<td class="cellHeader">Temperature</td>                  <td id="temp_5642758260">                    36.7 ?C (98 ?F)                  </td>                  <td>10/23/2019 12:51 PM EDT</td>                  <td></td>                
+</tr>                
+<tr class="altRow">                  
+<td class="cellHeader">Respiratory Rate</td>                  <td id="resp_">-</td>                  <td>                    -                  </td>                  <td></td>                
+</tr>                
+<tr class="normRow">                  
+<td class="cellHeader">Oxygen Saturation</td>                  <td id="SpO2_5642758260">93%                  </td>                  <td>10/23/2019 12:51 PM EDT</td>                  <td></td>                
+</tr>                
+<tr class="altRow">                  
+<td class="cellHeader">Inhaled Oxygen Concentration</td>                  <td id="inhaled_">-                  </td>                  <td>-</td>                  <td></td>                
+</tr>                
+<tr class="normRow">                  
+<td class="cellHeader">Weight</td>                  <td id="weight_5642758260">57 kg                    (125 lb 9.6 oz)                  </td>                  <td>10/23/2019 12:51 PM EDT</td>                  <td></td>                
+</tr>                
+<tr class="altRow">                  
+<td class="cellHeader">Height</td>                  <td id="height_5637900000">165.1                    cm (5' 5")                  </td>                  <td>08/28/20197:20 AM EDT</td>                  <td></td>                
+</tr>                
+<tr class="normRow">                  
+<td class="cellHeader">Body Mass Index</td>                  <td id="bmi_5642758260">20.9                  </td>                  <td>08/28/20197:20 AM EDT</td>                  <td></td>                
+</tr>              
+</tbody>            
+</table>          
+</div>
+<h3>
+<a name="N90451" href="file:///Users/z256588/Documents/Epic_CCD.html#toc">Plan of Treatment</a> <button onclick="PrintElem(event)">Print</button>
+</h3>
+<div>            
+<span style="font-weight:bold; ">Upcoming Encounters</span><table>              
+              
+<colgroup>                
+<col width="10%">                
+<col width="15%">                
+<col span="3" width="25%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Date</th>                  <th>Type</th>                  <th>Specialty</th>                  <th>Care                    Team                  </th>                  <th>Description</th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr id="encounter200" class="normRow">                  
+<td>02/28/2020</td>                  <td id="encounter200type">Office                    Visit                  </td>                  <td id="encounter200specialty">Rheumatology</td>                  <td>                    
+<p>Doctor Name2</p>                    
+<p>123 Street                      Name                    </p>                    
+<p>Ste A</p>                    
+<p>TownName, OH 12345-3802</p>                    
+<p>                      567-307-7605                    </p>                    
+<p>567-307-7606 (Fax)</p>                  
+</td>                  <td></td>                
+</tr>              
+</tbody>            
+</table>            
+<table>              
+<colgroup>                
+<col width="25%">                
+<col width="13%">                
+<col width="37%">                
+<col width="25%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Health Maintenance</th>                  <th>Due Date</th>                  <th>Last Done</th>                  <th>                    Comments                  </th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr id="hm206">                  
+<td id="hm206name">HIV SCREENING DISCUSSION</td>                  <td class="Bold">                    03/06/1987                  </td>                  <td></td>                  <td id="hm206comment"></td>                
+</tr>                
+<tr id="hm202">                  
+<td id="hm202name">TETANUS</td>                  <td class="Bold">03/06/1992</td>                  <td></td>                  <td id="hm202comment"></td>                
+</tr>                
+<tr id="hm205">                  
+<td id="hm205name">TDAP (ADULT)</td>                  <td class="Bold">03/06/1993</td>                  <td></td>                  <td id="hm205comment"></td>                
+</tr>                
+<tr id="hm204">                  
+<td id="hm204name">LIPID SCREENING</td>                  <td class="Bold">03/06/2014</td>                  <td></td>                  <td id="hm204comment"></td>                
+</tr>                
+<tr id="hm203">                  
+<td id="hm203name">INFLUENZA VACCINE (#1)</td>                  <td class="Bold">                    09/01/2019                  </td>                  <td></td>                  <td id="hm203comment"></td>                
+</tr>              
+</tbody>            
+</table>          
+</div>
+<h3>
+<a name="N91235" href="file:///Users/z256588/Documents/Epic_CCD.html#toc">Procedures</a> <button onclick="PrintElem(event)">Print</button>
+</h3>
+<div>            
+<table>              
+<colgroup>                
+<col width="25%">                
+<col width="10%">                
+<col width="15%">                
+<col span="2" width="25%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Procedure Name</th>                  <th>Priority</th>                  <th>Date/Time</th>                  <th>Associated                    Diagnosis                  </th>                  <th>Comments</th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr id="procedure217" class="normRow">                  
+<td>                    <span>HC CBC EDIFF &amp; PLATELET</span>                  </td>                  <td>Today</td>                  <td>11/25/2019 12:58 PM EST</td>                  <td>                    
+<p>Psoriatic arthritis</p>                    
+<p>Long-term use of high-risk                      medication                    </p>                    
+<p>Methotrexate, long term, current use</p>                  
+</td>                  <td>                    
+<p>                      Results for this procedure are in the                      <span class="xLink2-Result419161003">results section</span>                      .                    </p>                  
+</td>                
+</tr>                
+<tr id="procedure216" class="altrow">                  
+<td>                    <span>ALT</span>                  </td>                  <td>Today</td>                  <td>11/25/2019 12:58 PM EST</td>                  <td>                    
+<p>Psoriatic arthritis</p>                    
+<p>Long-term use of high-risk                      medication                    </p>                    
+<p>Methotrexate, long term, current use</p>                  
+</td>                  <td>                    
+<p>                      Results for this procedure are in the                      <span class="xLink2-Result419161001">results section</span>                      .                    </p>                  
+</td>                
+</tr>                
+<tr id="procedure215" class="normRow">                  
+<td>                    <span>AST</span>                  </td>                  <td>Today</td>                  <td>11/25/2019 12:58 PM EST</td>                  <td>                    
+<p>Psoriatic arthritis</p>                    
+<p>Long-term use of high-risk                      medication                    </p>                    
+<p>Methotrexate, long term, current use</p>                  
+</td>                  <td>                    
+<p>                      Results for this procedure are in the                      <span class="xLink2-Result419161000">results section</span>                      .                    </p>                  
+</td>                
+</tr>                
+<tr id="procedure214" class="altrow">                  
+<td>                    <span>CREATININE SERUM</span>                  </td>                  <td>Today</td>                  <td>11/25/2019 12:58 PM EST</td>                  <td>                    
+<p>Psoriatic arthritis</p>                    
+<p>Long-term use of high-risk                      medication                    </p>                    
+<p>Methotrexate, long term, current use</p>                  
+</td>                  <td>                    
+<p>                      Results for this procedure are in the                      <span class="xLink2-Result419160999">results section</span>                      .                    </p>                  
+</td>                
+</tr>                
+<tr id="procedure213" class="normRow">                  
+<td>                    <span>C REACTIVE PROTEIN</span>                  </td>                  <td>Today</td>                  <td>11/25/2019 12:58 PM EST</td>                  <td>                    
+<p>Psoriatic arthritis</p>                    
+<p>Long-term use of high-risk                      medication                    </p>                    
+<p>Methotrexate, long term, current use</p>                  
+</td>                  <td>                    
+<p>                      Results for this procedure are in the                      <span class="xLink2-Result419160997">results section</span>                      .                    </p>                  
+</td>                
+</tr>                
+<tr id="procedure212" class="altrow">                  
+<td>                    <span>SEDIMENTATION RATE, AUTOMATED</span>                  </td>                  <td>Today</td>                  <td>11/25/2019 12:58 PM EST</td>                  <td>                    
+<p>Psoriatic arthritis</p>                    
+<p>Long-term use of high-risk                      medication                    </p>                    
+<p>Methotrexate, long term, current use</p>                  
+</td>                  <td>                    
+<p>                      Results for this procedure are in the                      <span class="xLink2-Result419160996">results section</span>                      .                    </p>                  
+</td>                
+</tr>                
+<tr id="procedure211" class="normRow">                  
+<td>                    <span>RFLX QUANTIFERON TB GOLD PLUS</span>                  </td>                  <td>Routine</td>                  <td>09/25/2019 10:11 AM EDT</td>                  <td></td>                  <td>                    
+<p>                      Results for this procedure are in the                      <span class="xLink2-Result407740709">results section</span>                      .                    </p>                  
+</td>                
+</tr>                
+<tr id="procedure210" class="altrow">                  
+<td>                    <span>M TUBERCULOSIS BY QUANTIFERON, BLD</span>                  </td>                  <td>Routine</td>                  <td>09/25/2019 10:11 AM EDT</td>                  <td>                    
+<p>Long term current use of immunosuppressive drug</p>                  
+</td>                  <td>                    
+<p>                      Results for this procedure are in the                      <span class="xLink2-Result407160619">results section</span>                      .                    </p>                  
+</td>                
+</tr>                
+<tr id="procedure221" class="normRow">                  
+<td>                    <span>PR NERVE CONDUCTION STUDIES 7-8 STUDIES</span>                  </td>                  <td>Routine</td>                  <td>09/12/2019 11:52 AM EDT</td>                  <td>                    
+<p>Lesion of ulnar nerve, bilateral</p>                  
+</td>                  <td>                    
+<p>                      Results for this procedure are in the                      <span class="xLink2-Result405132961">results section</span>                      .                    </p>                  
+</td>                
+</tr>                
+<tr id="procedure220" class="altrow">                  
+<td>                    <span>                      PR NEEDLE EMG EA EXTREMTY W/PARASPINL AREA COMPLETE                    </span>                  </td>                  <td>Routine</td>                  <td>09/12/2019 11:52 AM EDT</td>                  <td>                    
+<p>Lesion of ulnar nerve, bilateral</p>                  
+</td>                  <td>                    
+<p>                      Results for this procedure are in the                      <span class="xLink2-Result405132960">results section</span>                      .                    </p>                  
+</td>                
+</tr>                
+<tr id="procedure219" class="normRow">                  
+<td>                    <span>EMG &amp; NERVE CONDUCTION</span>                  </td>                  <td>Routine</td>                  <td>09/12/2019 11:52 AM EDT</td>                  <td>                    
+<p>Psoriatic arthritis</p>                    
+<p>Methotrexate, long term, current                      use                    </p>                    
+<p>Long-term use of high-risk medication</p>                    
+<p>                      Long term current use of non-steroidal anti-inflammatories (NSAID)                    </p>                    
+<p>History of psoriatic arthritis</p>                    
+<p>Fatigue,                      unspecified type                    </p>                    
+<p>                      Asthma, unspecified asthma severity, unspecified whether complicated, unspecified whether                      persistent                    </p>                    
+<p>Paresthesia of both hands</p>                    
+<p>Dorsalgia</p>                    
+<p>                      Cervicalgia                    </p>                    
+<p>Bilateral carpal tunnel syndrome</p>                    
+<p>                      Weakness of both hands                    </p>                    
+<p>Tendonitis of both rotator                      cuffs                    </p>                    
+<p>Subacromial bursitis</p>                    
+<p>Right elbow                      pain                    </p>                    
+<p>Hip pain, left</p>                    
+<p>Hip flexor tendonitis,                      left                    </p>                    
+<p>Disorder of bone and cartilage</p>                    
+<p>Chronic                      pain of both shoulders                    </p>                    
+<p>Bilateral wrist pain</p>                    
+<p>                      Bilateral hand pain                    </p>                    
+<p>Bilateral biceps tendonitis</p>                  
+</td>                  <td>                    
+<p>                      Results for this procedure are in the                      <span class="xLink2-Result405124811">results section</span>                      .                    </p>                  
+</td>                
+</tr>                
+<tr id="procedure218" class="altrow">                  
+<td>                    <span>EMG AND NERVE CONDUCTION (SCANNED)</span>                  </td>                  <td>Routine</td>                  <td>09/12/2019</td>                  <td></td>                  <td>                    
+<p>                      Results for this procedure are in the                      <span class="xLink2-Result405173454">results section</span>                      .                    </p>                  
+</td>                
+</tr>              
+</tbody>            
+</table>            from Last 3 Months          </div>
+<h3>
+<a name="N94939" href="file:///Users/z256588/Documents/Epic_CCD.html#toc">Results</a> <button onclick="PrintElem(event)">Print</button>
+</h3>
+<div>            
+<ul>
+<li>                C REACTIVE PROTEIN (11/25/2019 12:58 PM                  EST)                :                 <table>                  
+<colgroup>                    
+<col width="15%">                    
+<col width="30%">                    
+<col width="20%">                    
+<col width="15%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Component</th>                      <th>Value</th>                      <th>Ref Range</th>                      <th>Performed                        At                      </th>                      <th>Pathologist Signature</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr id="Result419160997Comp1" class="normRow">                      
+<td id="Result419160997Comp1Name">C-REACTIVE                        PROTEIN                      </td>                      <td> &lt;8.9                      </td>                      <td>0 - 10.0 MG/L</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419160997Comp1Signature"></td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Specimen</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result419160997Specimen">Blood</td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                    
+<col width="30%">                    
+<col width="25%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Performing Organization</th>                      <th>Address</th>                      <th>City/State/Zipcode</th>                      <th>                        Phone Number                      </th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result419160997PerformingLab">                        
+<p>                          TownName HOSPTAL NAME - 123 Street Name - TownName                        </p>                      
+</td>                      <td>                        
+<p>123 Street Name</p>                      
+</td>                      <td>                        <span>TownName, OH 12345</span>                      </td>                      <td>                        
+<p>567-307-7666</p>                      
+</td>                    
+</tr>                  
+</tbody>                
+</table>              
+</li>
+<li>                                  SEDIMENTATION RATE, AUTOMATED (11/25/2019 12:58 PM EST)                :                 <table>                  
+<colgroup>                    
+<col width="15%">                    
+<col width="30%">                    
+<col width="20%">                    
+<col width="15%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Component</th>                      <th>Value</th>                      <th>Ref Range</th>                      <th>Performed                        At                      </th>                      <th>Pathologist Signature</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr id="Result419160996Comp1" class="normRow">                      
+<td id="Result419160996Comp1Name">SEDIMENTATION                        RATE AUTOMATED                      </td>                      <td>                        <span class="flagData">24</span>                        <span class="flagData">(H)</span>                      </td>                      <td>0 - 15 MM/HR</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419160996Comp1Signature"></td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Specimen</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result419160996Specimen">Blood</td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                    
+<col width="30%">                    
+<col width="25%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Performing Organization</th>                      <th>Address</th>                      <th>City/State/Zipcode</th>                      <th>                        Phone Number                      </th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result419160996PerformingLab">                        
+<p>                          TownName HOSPTAL NAME - 123 Street Name - TownName                        </p>                      
+</td>                      <td>                        
+<p>123 Street Name</p>                      
+</td>                      <td>                        <span>TownName, OH 12345</span>                      </td>                      <td>                        
+<p>567-307-7666</p>                      
+</td>                    
+</tr>                  
+</tbody>                
+</table>              
+</li>
+<li>                CBC, EDIF, PLATELET (11/25/2019 12:58 PM                  EST)                :                 <table>                  
+<colgroup>                    
+<col width="15%">                    
+<col width="30%">                    
+<col width="20%">                    
+<col width="15%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Component</th>                      <th>Value</th>                      <th>Ref Range</th>                      <th>Performed                        At                      </th>                      <th>Pathologist Signature</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr id="Result419161003Comp1" class="normRow">                      
+<td id="Result419161003Comp1Name">WBC (WHITE BLOOD                        COUNT)                      </td>                      <td>10.3</td>                      <td>3.6 - 11.0 10*3/uL</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp1Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp2" class="altRow">                      
+<td id="Result419161003Comp2Name">                        RBC                      </td>                      <td>4.09</td>                      <td>4.0 - 6.1 10*6/uL</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp2Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp3" class="normRow">                      
+<td id="Result419161003Comp3Name">HEMOGLOBIN                        (HGB)                      </td>                      <td>                        <span class="flagData">13.9</span>                        <span class="flagData">                          (L)                        </span>                      </td>                      <td>14.0 - 18.0 G/DL</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp3Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp4" class="altRow">                      
+<td id="Result419161003Comp4Name">HEMATOCRIT                        (HCT)                      </td>                      <td>                        <span class="flagData">41.0</span>                        <span class="flagData">                          (L)                        </span>                      </td>                      <td>42.0 - 52.0 %</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp4Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp5" class="normRow">                      
+<td id="Result419161003Comp5Name">MEAN CELL                        VOLUME                      </td>                      <td>                        <span class="flagData">100.2</span>                        <span class="flagData">                          (H)                        </span>                      </td>                      <td>80.0 - 100.0 FL</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp5Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp6" class="altRow">                      
+<td id="Result419161003Comp6Name">Mean Cell HGB</td>                      <td>                        34.0                      </td>                      <td>26.0 - 35.0 PG</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp6Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp7" class="normRow">                      
+<td id="Result419161003Comp7Name">MEAN CELL HGB                        CONCENTRATION                      </td>                      <td>33.9</td>                      <td>27.0 - 37.0 G/DL</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp7Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp8" class="altRow">                      
+<td id="Result419161003Comp8Name">RBC                        DISTRIBUTION                      </td>                      <td>14.2</td>                      <td>11.5 - 14.5 %</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp8Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp9" class="normRow">                      
+<td id="Result419161003Comp9Name">PLATELET                        COUNT                      </td>                      <td>370</td>                      <td>130.0 - 400.0 10*3/uL</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp9Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp10" class="altRow">                      
+<td id="Result419161003Comp10Name">MEAN PLATELET                        VOLUME                      </td>                      <td>8.6</td>                      <td>7.4 - 11.0 FL</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp10Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp11" class="normRow">                      
+<td id="Result419161003Comp11Name">DIFFERENTIAL                        TYPE                      </td>                      <td>AUTO DIFF</td>                      <td>%</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp11Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp12" class="altRow">                      
+<td id="Result419161003Comp12Name">NEUTROPHILS</td>                      <td>                        67.4                      </td>                      <td>37.0 - 75.0 %</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp12Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp13" class="normRow">                      
+<td id="Result419161003Comp13Name">LYMPHOCYTE</td>                      <td>                        <span class="flagData">15.5</span>                        <span class="flagData">                          (L)                        </span>                      </td>                      <td>20.0 - 55.0 %</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp13Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp14" class="altRow">                      
+<td id="Result419161003Comp14Name">MONOCYTE %</td>                      <td>                        9.9                      </td>                      <td>0.0 - 10.0 %</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp14Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp15" class="normRow">                      
+<td id="Result419161003Comp15Name">EOSINOPHIL                        %                      </td>                      <td>5.8</td>                      <td>0.0 - 11.0 %</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp15Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp16" class="altRow">                      
+<td id="Result419161003Comp16Name">BASOPHIL %</td>                      <td>                        1.4                      </td>                      <td>0.0 - 2.0 %</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp16Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp17" class="normRow">                      
+<td id="Result419161003Comp17Name">Absolute                        Neutrophil Count                      </td>                      <td>                        <span class="flagData">6.9</span>                        <span class="flagData">(H)</span>                      </td>                      <td>1.4 - 6.5 10*3/uL</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp17Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp18" class="altRow">                      
+<td id="Result419161003Comp18Name">LYMPHOCYTES,                        ABSOLUTE                      </td>                      <td>1.60</td>                      <td>1.2 - 3.4 10*3/uL</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp18Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp19" class="normRow">                      
+<td id="Result419161003Comp19Name">MONOCYTES,                        ABSOLUTE                      </td>                      <td>                        <span class="flagData">1.0</span>                        <span class="flagData">(H)</span>                      </td>                      <td>0.0 - 0.7 10*3/uL</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp19Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp20" class="altRow">                      
+<td id="Result419161003Comp20Name">ABSOLUTE                        EOSINOPHIL COUNT                      </td>                      <td>0.60</td>                      <td>0.0 - 0.7 10*3/uL</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp20Signature"></td>                    
+</tr>                    
+<tr id="Result419161003Comp21" class="normRow">                      
+<td id="Result419161003Comp21Name">ABSOLUTE                        BASOPHIL COUNT                      </td>                      <td>0.1</td>                      <td>0.0 - 0.2 10*3/uL</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161003Comp21Signature"></td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Specimen</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result419161003Specimen">Blood</td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                    
+<col width="30%">                    
+<col width="25%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Performing Organization</th>                      <th>Address</th>                      <th>City/State/Zipcode</th>                      <th>                        Phone Number                      </th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result419161003PerformingLab">                        
+<p>                          TownName HOSPTAL NAME - 123 Street Name - TownName                        </p>                      
+</td>                      <td>                        
+<p>123 Street Name</p>                      
+</td>                      <td>                        <span>TownName, OH 12345</span>                      </td>                      <td>                        
+<p>567-307-7666</p>                      
+</td>                    
+</tr>                  
+</tbody>                
+</table>              
+</li>
+<li>                ALT (11/25/2019 12:58 PM EST):                 <table>                  
+<colgroup>                    
+<col width="15%">                    
+<col width="30%">                    
+<col width="20%">                    
+<col width="15%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Component</th>                      <th>Value</th>                      <th>Ref Range</th>                      <th>Performed                        At                      </th>                      <th>Pathologist Signature</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr id="Result419161001Comp1" class="normRow">                      
+<td id="Result419161001Comp1Name">ALT</td>                      <td>                        <span class="flagData">15</span>                        <span class="flagData">(L)</span>                      </td>                      <td>17 - 63 IU/L</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161001Comp1Signature"></td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Specimen</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result419161001Specimen">Blood</td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                    
+<col width="30%">                    
+<col width="25%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Performing Organization</th>                      <th>Address</th>                      <th>City/State/Zipcode</th>                      <th>                        Phone Number                      </th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result419161001PerformingLab">                        
+<p>                          TownName HOSPTAL NAME - 123 Street Name - TownName                        </p>                      
+</td>                      <td>                        
+<p>123 Street Name</p>                      
+</td>                      <td>                        <span>TownName, OH 12345</span>                      </td>                      <td>                        
+<p>567-307-7666</p>                      
+</td>                    
+</tr>                  
+</tbody>                
+</table>              
+</li>
+<li>                AST (11/25/2019 12:58 PM EST):                 <table>                  
+<colgroup>                    
+<col width="15%">                    
+<col width="30%">                    
+<col width="20%">                    
+<col width="15%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Component</th>                      <th>Value</th>                      <th>Ref Range</th>                      <th>Performed                        At                      </th>                      <th>Pathologist Signature</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr id="Result419161000Comp1" class="normRow">                      
+<td id="Result419161000Comp1Name">AST</td>                      <td>                        16                      </td>                      <td>15 - 41 IU/L</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419161000Comp1Signature"></td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Specimen</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result419161000Specimen">Blood</td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                    
+<col width="30%">                    
+<col width="25%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Performing Organization</th>                      <th>Address</th>                      <th>City/State/Zipcode</th>                      <th>                        Phone Number                      </th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result419161000PerformingLab">                        
+<p>                          TownName HOSPTAL NAME - 123 Street Name - TownName                        </p>                      
+</td>                      <td>                        
+<p>123 Street Name</p>                      
+</td>                      <td>                        <span>TownName, OH 12345</span>                      </td>                      <td>                        
+<p>567-307-7666</p>                      
+</td>                    
+</tr>                  
+</tbody>                
+</table>              
+</li>
+<li>                CREATININE SERUM (11/25/2019 12:58 PM                  EST)                :                 <table>                  
+<colgroup>                    
+<col width="15%">                    
+<col width="30%">                    
+<col width="20%">                    
+<col width="15%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Component</th>                      <th>Value</th>                      <th>Ref Range</th>                      <th>Performed                        At                      </th>                      <th>Pathologist Signature</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr id="Result419160999Comp1" class="normRow">                      
+<td id="Result419160999Comp1Name">CREATININE                        SERUM                      </td>                      <td>1.19</td>                      <td>0.66 - 1.25 MG/DL</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419160999Comp1Signature"></td>                    
+</tr>                    
+<tr id="Result419160999Comp2" class="altRow">                      
+<td id="Result419160999Comp2Name">ESTIMATED GFR, NON                        AFRICAN AMER                      </td>                      <td>&gt;60</td>                      <td>ml/min/1.73sq.m</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419160999Comp2Signature"></td>                    
+</tr>                    
+<tr id="Result419160999Comp3" class="normRow">                      
+<td id="Result419160999Comp3Name">ESTIMATED GFR,                        AFRICAN AMERICAN                      </td>                      <td>&gt;60</td>                      <td>ml/min/1.73sq.m</td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419160999Comp3Signature"></td>                    
+</tr>                    
+<tr id="Result419160999Comp4" class="altRow">                      
+<td id="Result419160999Comp4Name">GFR COMMENT</td>                      <td>                        <span>Average GFR for 40-49 years old = 99.</span>                        
+<br>                        
+<span class="allIndent">                          <span class="cellHeader">Comment:</span>                          
+<br>                          
+<span class="pre">                            Chronic Kidney disease, GFR =&lt;60.                            <br>                            Kidney failure, GFR =&lt;15.                            <br>                            The GFR estimate is not adjusted for extreme body surface area or acute process, nor has it                            been                            validated for pregnant women or ethnic groups other than Caucasian and African American.                            <br>                            
+<br>                          
+</span>                        </span>                      </td>                      <td></td>                      <td>                        TownName HOSPTAL NAME - 123 Street Name - TownName                      </td>                      <td id="Result419160999Comp4Signature"></td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Specimen</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result419160999Specimen">Blood</td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                    
+<col width="30%">                    
+<col width="25%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Performing Organization</th>                      <th>Address</th>                      <th>City/State/Zipcode</th>                      <th>                        Phone Number                      </th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result419160999PerformingLab">                        
+<p>                          TownName HOSPTAL NAME - 123 Street Name - TownName                        </p>                      
+</td>                      <td>                        
+<p>123 Street Name</p>                      
+</td>                      <td>                        <span>TownName, OH 12345</span>                      </td>                      <td>                        
+<p>567-307-7666</p>                      
+</td>                    
+</tr>                  
+</tbody>                
+</table>              
+</li>
+<li>                                  RFLX QUANTIFERON TB GOLD PLUS (09/25/2019 10:11 AM EDT)                :                 <table>                  
+<colgroup>                    
+<col width="15%">                    
+<col width="30%">                    
+<col width="20%">                    
+<col width="15%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Component</th>                      <th>Value</th>                      <th>Ref Range</th>                      <th>Performed                        At                      </th>                      <th>Pathologist Signature</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr id="Result407740709Comp1" class="normRow">                      
+<td id="Result407740709Comp1Name">QUANTIFERON                        CRITERIA                      </td>                      <td>                        <span>Comment</span>                        
+<br>                        
+<span class="allIndent">                          <span class="cellHeader">Comment:</span>                          
+<br>                          
+<span class="pre">                            (NOTE)                            <br>                            The QuantiFERON-TB Gold Plus result is determined by subtracting                            <br>                            the Nil value from either TB antigen (Ag) tube. The mitogen tube                            <br>                            serves as a control for the test.                            <br>                            
+<br>                          
+</span>                        </span>                      </td>                      <td></td>                      <td>QUEST</td>                      <td id="Result407740709Comp1Signature"></td>                    
+</tr>                    
+<tr id="Result407740709Comp2" class="altRow">                      
+<td id="Result407740709Comp2Name">QUANTIFERON TB1 Ag                        VALUE                      </td>                      <td>0.02</td>                      <td>IU/mL</td>                      <td>QUEST</td>                      <td id="Result407740709Comp2Signature"></td>                    
+</tr>                    
+<tr id="Result407740709Comp3" class="normRow">                      
+<td id="Result407740709Comp3Name">QUANTIFERON TB2                        Ag VALUE                      </td>                      <td>0.02</td>                      <td>IU/mL</td>                      <td>QUEST</td>                      <td id="Result407740709Comp3Signature"></td>                    
+</tr>                    
+<tr id="Result407740709Comp4" class="altRow">                      
+<td id="Result407740709Comp4Name">QUANTIFERON NIL                        VALUE                      </td>                      <td>0.02</td>                      <td>IU/mL</td>                      <td>QUEST</td>                      <td id="Result407740709Comp4Signature"></td>                    
+</tr>                    
+<tr id="Result407740709Comp5" class="normRow">                      
+<td id="Result407740709Comp5Name">QUANTIFERON                        MITOGEN VALUE                      </td>                      <td>                        <span>&gt;10.00</span>                        <span class="allIndent">                          <span class="cellHeader">                            Comment:                          </span>                          <span>PERFORMED AT LABCORP                            DUBLIN                          </span>                        </span>                      </td>                      <td>IU/mL</td>                      <td>QUEST</td>                      <td id="Result407740709Comp5Signature"></td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Specimen</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result407740709Specimen"></td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                    
+<col width="30%">                    
+<col width="25%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Performing Organization</th>                      <th>Address</th>                      <th>City/State/Zipcode</th>                      <th>                        Phone Number                      </th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result407740709PerformingLab">                        
+<p>QUEST</p>                      
+</td>                      <td>                        
+<p></p>                      
+</td>                      <td></td>                      <td>                        
+<p></p>                      
+</td>                    
+</tr>                  
+</tbody>                
+</table>              
+</li>
+<li>                                  M TUBERCULOSIS BY QUANTIFERON, BLD (09/25/2019 10:11 AM EDT)                :                 <table>                  
+<colgroup>                    
+<col width="15%">                    
+<col width="30%">                    
+<col width="20%">                    
+<col width="15%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Component</th>                      <th>Value</th>                      <th>Ref Range</th>                      <th>Performed                        At                      </th>                      <th>Pathologist Signature</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr id="Result407160619Comp1" class="normRow">                      
+<td id="Result407160619Comp1Name">QUANTIFERON                        INCUBATION                      </td>                      <td>Incubation performed.</td>                      <td></td>                      <td>QUEST</td>                      <td id="Result407160619Comp1Signature"></td>                    
+</tr>                    
+<tr id="Result407160619Comp2" class="altRow">                      
+<td id="Result407160619Comp2Name">QUANTIFERON TB                        GOLD PLUS                      </td>                      <td>                        <span>Negative</span>                        <span class="allIndent">                          <span class="cellHeader">                            Comment:                          </span>                          <span>PERFORMED AT LABCORP                            DUBLIN                          </span>                        </span>                      </td>                      <td>Negative</td>                      <td>QUEST</td>                      <td id="Result407160619Comp2Signature"></td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Specimen</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result407160619Specimen">Blood</td>                    
+</tr>                  
+</tbody>                
+</table>                
+<table>                  
+<colgroup>                    
+<col width="25%">                    
+<col width="30%">                    
+<col width="25%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Performing Organization</th>                      <th>Address</th>                      <th>City/State/Zipcode</th>                      <th>                        Phone Number                      </th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result407160619PerformingLab">                        
+<p>QUEST</p>                      
+</td>                      <td>                        
+<p></p>                      
+</td>                      <td></td>                      <td>                        
+<p></p>                      
+</td>                    
+</tr>                  
+</tbody>                
+</table>              
+</li>
+<li>                                  PR NEEDLE EMG EA EXTREMTY W/PARASPINL AREA COMPLETE (09/12/2019 11:52 AM EDT)                :                 <table>                  
+<colgroup>                    
+<col width="80%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Narrative</th>                      <th>Performed At</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result405132960Narrative" class="pre">                        
+<p>NAme T NAme, MD? ? 9/12/2019 11:53                          AM                        </p>                        
+<p>Study:?                          EMG/NCV                        </p>                        
+<p></p>                        
+<p>Date:? 9/12/2019</p>                        
+<p>                          Patient Name:? Name LName                        </p>                        
+<p>Patient DOB:?                          1/1/1900                        </p>                        
+<p></p>                        
+<p>Preliminary                          Impression:?                        </p>                        
+<p></p>                        
+<p>Non-specific reductions of                          Ulnar                          SNAPs                        </p>                        
+<p></p>                        
+<p></p>                        
+<p>                          Final, full report to be scanned as soon as possible.                        </p>                        
+<p></p>                        
+<p></p>                        
+<p></p>                        
+<p></p>                        
+<p></p>                      
+</td>                      <td class="pre">                        
+<p></p>                      
+</td>                    
+</tr>                  
+</tbody>                
+</table>              
+</li>
+<li>                                  PR NERVE CONDUCTION STUDIES 7-8 STUDIES (09/12/2019 11:52 AM EDT)                :                 <table>                  
+<colgroup>                    
+<col width="80%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Narrative</th>                      <th>Performed At</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result405132961Narrative" class="pre">                        
+<p>NAme T NAme, MD? ? 9/12/2019 11:53                          AM                        </p>                        
+<p>Study:?                          EMG/NCV                        </p>                        
+<p></p>                        
+<p>Date:? 9/12/2019</p>                        
+<p>                          Patient Name:? Name LName                        </p>                        
+<p>Patient DOB:?                          1/1/1900                        </p>                        
+<p></p>                        
+<p>Preliminary                          Impression:?                        </p>                        
+<p></p>                        
+<p>Non-specific reductions of                          Ulnar                          SNAPs                        </p>                        
+<p></p>                        
+<p></p>                        
+<p>                          Final, full report to be scanned as soon as possible.                        </p>                        
+<p></p>                        
+<p></p>                        
+<p></p>                        
+<p></p>                        
+<p></p>                      
+</td>                      <td class="pre">                        
+<p></p>                      
+</td>                    
+</tr>                  
+</tbody>                
+</table>              
+</li>
+<li>                EMG &amp; NERVE CONDUCTION (09/12/2019 11:52                  AM EDT)                :                 <table>                  
+<colgroup>                    
+<col width="80%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Narrative</th>                      <th>Performed At</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td id="Result405124811Narrative" class="pre">                        
+<p>NAme T NAme, MD? ? 9/12/2019 11:53                          AM                        </p>                        
+<p>Study:?                          EMG/NCV                        </p>                        
+<p></p>                        
+<p>Date:? 9/12/2019</p>                        
+<p>                          Patient Name:? Name LName                        </p>                        
+<p>Patient DOB:?                          1/1/1900                        </p>                        
+<p></p>                        
+<p>Preliminary                          Impression:?                        </p>                        
+<p></p>                        
+<p>Non-specific reductions of                          Ulnar                          SNAPs                        </p>                        
+<p></p>                        
+<p></p>                        
+<p>                          Final, full report to be scanned as soon as possible.                        </p>                        
+<p></p>                        
+<p></p>                        
+<p></p>                        
+<p></p>                        
+<p></p>                      
+</td>                      <td class="pre">                        
+<p></p>                      
+</td>                    
+</tr>                  
+</tbody>                
+</table>              
+</li>
+<li>                EMG AND NERVE CONDUCTION (SCANNED)                  (09/12/2019)                :                 <table>                  
+<colgroup>                    
+<col width="80%">                    
+<col width="20%">                  
+</colgroup>                  
+<thead>                    
+<tr>                      
+<th>Narrative</th>                      <th>Performed At</th>                    
+</tr>                  
+</thead>                  
+<tbody>                    
+<tr>                      
+<td>                        
+<p>                          This result has an attachment that is not available.                        </p>                        
+<p></p>                      
+</td>                      <td class="pre">                        
+<p></p>                      
+</td>                    
+</tr>                  
+</tbody>                
+</table>              
+</li>
+</ul>            from Last 3 Months          </div>
+<h3>
+<a name="N104858" href="file:///Users/z256588/Documents/Epic_CCD.html#toc">            Insurance          </a> <button onclick="PrintElem(event)">Print</button>
+</h3>
+<div>            
+<table>              
+<colgroup>                
+<col width="25%">                
+<col width="10%">                
+<col width="15%">                
+<col width="10%">                
+<col span="2" width="15%">                
+<col width="10%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Payer</th>                  <th>Benefit Plan / Group</th>                  <th>Subscriber ID</th>                  <th>                    Effective Dates                  </th>                  <th>Phone</th>                  <th>Address</th>                  <th>Type</th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr id="coverage226">                  
+<td>MEDICARE</td>                  <td>MEDICARE A AND B</td>                  <td>xxxxxxxxxxx</td>                  <td>                    1/1/2004-Present                  </td>                  <td></td>                  <td>                    
+<p>Townname, OH</p>                  
+</td>                  <td></td>                
+</tr>                
+<tr id="coverage227">                  
+<td>MEDICAID</td>                  <td>MEDICAID</td>                  <td>xxxxxxxxxxxx</td>                  <td>                    11/1/2019-Present                  </td>                  <td></td>                  <td></td>                  <td></td>                
+</tr>              
+</tbody>            
+</table>            
+<table>              
+<colgroup>                
+<col width="25%">                
+<col width="10%">                
+<col width="15%">                
+<col width="10%">                
+<col width="15%">                
+<col width="25%">              
+</colgroup>              
+<thead>                
+<tr>                  
+<th>Guarantor Name</th>                  <th>Account Type</th>                  <th>Relation to Patient</th>                  <th>                    Date of Birth                  </th>                  <th>Phone</th>                  <th>Billing Address</th>                
+</tr>              
+</thead>              
+<tbody>                
+<tr>                  
+<td>name,name</td>                  <td>Personal/Family</td>                  <td>Self</td>                  <td>                    01/01/1900                  </td>                  <td>                    
+<p>555-555-5555 (Home)</p>                  
+</td>                  <td>                    
+<p>street address</p>                    
+<p>city, OH 12345</p>                  
+</td>                
+</tr>              
+</tbody>            
+</table>          
+</div>
+<br>
+<br>
+
+
+</body></html>
