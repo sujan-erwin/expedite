@@ -21,6 +21,8 @@ export class LookupPatientComponent implements OnInit {
   @ViewChild('firstName') firstNameElement: ElementRef;
   @ViewChild('hbs') HBSIDElement: ElementRef;
   @ViewChild('noPatientFoundWithDemo', { read: TemplateRef }) noPatientFoundWithDemo: TemplateRef<any>;
+  @ViewChild('multiplePatientProfiles', { read: TemplateRef }) multiplePatientProfiles: TemplateRef<any>;
+
 
   patientLookupForm: FormGroup;
   result: any;
@@ -28,7 +30,10 @@ export class LookupPatientComponent implements OnInit {
   isSubmitted: boolean;
   stateList: JSON;
   modalRef: any;
+  isPatientNotFound: boolean = false;
   demographicLookupFields: any = ['firstName', 'lastName', 'dob', 'zipCode', 'gender', 'addressline1', 'city', 'state'];
+  multiplePatientProfileList: Array<any> = [];
+  selectedMultiplePatientProfileId: String = '';
 
   constructor(fb: FormBuilder, private router: Router, private authService: AuthService, private searchService: SearchService,
     private spinnerService: SpinnerService, private patientDocService: PatientDocumentService, private modalService: NgbModal, private titleService: Title) {
@@ -52,7 +57,7 @@ export class LookupPatientComponent implements OnInit {
       city: [''],
       state: [''],
       phone: [''],
-      NPI: ['']
+      NPI: [''],
     });
     // this.setPatientLookUpOptionsValidators();
     this.applyDemographicValidators();
@@ -65,6 +70,9 @@ export class LookupPatientComponent implements OnInit {
     }
     if (Demo_VAL) {
       this.patientLookupForm.setValue(Demo_VAL);
+      if (Demo_VAL.addressline1 && Demo_VAL.city && Demo_VAL.state) {
+        this.isPatientNotFound = true;
+      }
     }
     if (lookUpOption_VAL) {
 
@@ -93,8 +101,17 @@ export class LookupPatientComponent implements OnInit {
     }
   }
 
+  applyAddressFieldsValidators() {
+    var lookupFields = ['addressline1', 'city', 'state'];
+    for (var val of lookupFields) {
+      this.patientLookupForm.controls[val].setValidators(Validators.required);
+      this.patientLookupForm.controls[val].reset();
+    }
+
+  }
+
   applyDemographicValidators() {
-    var lookupFields = ['firstName', 'lastName', 'dob', 'zipCode', 'gender', 'addressline1', 'city', 'state'];
+    var lookupFields = ['firstName', 'lastName', 'dob', 'gender', 'zipCode'];
     for (var val of lookupFields) {
       if (val === 'dob') {
         this.patientLookupForm.controls[val].setValidators([Validators.required, DateValidator]);
@@ -131,6 +148,7 @@ export class LookupPatientComponent implements OnInit {
     this.isSubmitted = false;
     this.clearSearch();
     this.searchService.storeLookupOption(this.patientLookUpOption.value);
+    this.isPatientNotFound = false;
 
     if (this.patientLookUpOption.value === 'HBS') {
       this.patientLookupForm.controls['HBSID'].setValidators([Validators.required]);
@@ -172,22 +190,37 @@ export class LookupPatientComponent implements OnInit {
       });
     }
     else if (this.patientLookupForm.valid && this.patientLookUpOption.value === 'demographic') {
-      console.info(this.patientLookupForm.value);
-      this.searchService.setPatient(this.patientLookupForm.value);
-      this.searchService.storeDemographicsInfo(this.patientLookupForm.value);
-      this.searchService.searchPatientByDemo(this.patientLookupForm.value).subscribe(data => { this.handleSearchResponse(data) }, (error) => {
-        console.log("PatientInfoValuewithDemo", this.patientLookupForm.value);
-        if (error.response) {
-          this.handleError(error.response, error.response.statusCode, error.status);
-        }
-        else {
-          this.handleError(null, null, null);
-        }
-      });
+      if (!this.result.displayDemographicError && !this.isPatientNotFound) {
+        this.searchService.setPatient(this.patientLookupForm.value);
+        this.searchService.storeDemographicsInfo(this.patientLookupForm.value);
+        this.searchService.searchPatientByDemo(this.patientLookupForm.value).subscribe(data => { this.handleSearchResponse(data) }, (error) => {
+          console.log("PatientInfoValuewithDemo", this.patientLookupForm.value);
+          if (error.response) {
+            this.handleError(error.response, error.response.statusCode, error.status);
+          }
+          else {
+            this.handleError(null, null, null);
+          }
+        });
+      } else {
+        this.searchService.setPatient(this.patientLookupForm.value);
+        this.searchService.storeDemographicsInfo(this.patientLookupForm.value);
+        this.searchService.searchPatientByAddressDemo(this.patientLookupForm.value).subscribe(data => { this.handleSearchResponse(data) }, (error) => {
+          console.log("PatientInfoValuewithDemo", this.patientLookupForm.value);
+          if (error.response) {
+            this.handleError(error.response, error.response.statusCode, error.status);
+          }
+          else {
+            this.handleError(null, null, null);
+          }
+        });
+      }
+
     }
   }
 
   handleSearchResponse(body) {
+    this.isPatientNotFound = false;
     if (body && body.response) {
       if (body.response.statusCode === '0000') {
         console.log("response", body.response);
@@ -250,20 +283,39 @@ export class LookupPatientComponent implements OnInit {
         this.result.banner.info += `${statusCode} - ${response?.statusDesc}`;
       }
       else {
-        this.handleDisplayError(statusCode);
+        this.handleDisplayError(statusCode, response);
       }
     }
   }
 
-  handleDisplayError(statusCode) {
+  handleDisplayError(statusCode, response) {
     if (this.patientLookupForm.get("patientLookUpOption").value === 'demographic') {
       this.result.displayDemosError = true;
-      if (statusCode !== '7027' && statusCode === '7028') {
+      // this.result.displayDemographicError = false;
+      if (statusCode === '7027') {
+        this.result.display = false;
+        console.log('the response is ..............', response);
+        if(response && response.resources && response.resources.length > 0){
+           this.multiplePatientProfileList = response.resources;
+           this.selectedMultiplePatientProfileId = this.multiplePatientProfileList[0].id;
+        }
+        this.modalRef = this.modalService.open(this.multiplePatientProfiles, { centered: true, size: 'lg' }).result.then((result) => {
+        }, (reason) => {
+          this.close();
+        });
+      }
+      else if (statusCode !== '7027' || statusCode === '7028') {
         this.result.display = false;
         this.modalRef = this.modalService.open(this.noPatientFoundWithDemo, { centered: true, size: 'lg' }).result.then((result) => {
         }, (reason) => {
           this.close();
         });
+      } else if (statusCode == '7000') {
+        this.result.displayDemographicError = true;
+        this.result.displayDemosError = false;
+        this.isSubmitted = false;
+        this.isPatientNotFound = true;
+        this.applyAddressFieldsValidators();
       }
     }
     else if (this.patientLookupForm.get("patientLookUpOption").value === 'HBS') {
@@ -282,6 +334,17 @@ export class LookupPatientComponent implements OnInit {
     this.close();
   }
 
+  viewPatientProfile(){
+    this.searchService.setShowfeedbackQuestion(false);
+    const resource = this.multiplePatientProfileList.find(profile => profile.id === this.selectedMultiplePatientProfileId);
+    this.searchService.setInternalResource(resource);
+    this.searchService.setSourceLookupPage('Patient lookup');
+    localStorage.setItem('patientLookup', 'Patient lookup');
+    localStorage.removeItem("quickLookup");
+    this.router.navigate([allPaths.internalPatientDocuments.link]);
+    this.close();
+  }
+
   closeBanner() {
     this.result.display = false;
   }
@@ -290,6 +353,7 @@ export class LookupPatientComponent implements OnInit {
     this.result.display = false;
     this.result.displayHBSIDError = false;
     this.result.displayDemosError = false;
+    this.result.displayDemographicError = false;
   }
 
   setradio(id, value) {
@@ -405,27 +469,6 @@ export class LookupPatientComponent implements OnInit {
     }
   }
 
-  get firstName() { return this.patientLookupForm.get('firstName'); }
-  get lastName() { return this.patientLookupForm.get('lastName'); }
-  get HBSID() { return this.patientLookupForm.get('HBSID'); }
-  get patientLookUpOption() { return this.patientLookupForm.get('patientLookUpOption'); }
-  get dob() { return this.patientLookupForm.get('dob'); }
-  get zipCode() { return this.patientLookupForm.get('zipCode'); }
-  get gender() { return this.patientLookupForm.get('gender'); }
-  get addressline1() { return this.patientLookupForm.get('addressline1'); }
-  get addressline2() { return this.patientLookupForm.get('addressline2'); }
-  get city() { return this.patientLookupForm.get('city'); }
-  get state() { return this.patientLookupForm.get('state'); }
-  get phone() { return this.patientLookupForm.get('phone'); }
-  get NPI() { return this.patientLookupForm.get('NPI'); }
-
-  ngOnDestroy() {
-    if (this.modalService.hasOpenModals()) {
-      this.close();
-    }
-
-  }
-
   getAddress(event) {
     if (!event.place) {
       let address = event.address ? event.address : '';
@@ -477,6 +520,33 @@ export class LookupPatientComponent implements OnInit {
     this.patientLookupForm.controls['city'].setValue(cityField.value);
     this.patientLookupForm.controls['state'].setValue(stateValue.name);
     this.patientLookupForm.controls['zipCode'].setValue(postalField.value);
+  }
+
+
+  get firstName() { return this.patientLookupForm.get('firstName'); }
+  get lastName() { return this.patientLookupForm.get('lastName'); }
+  get HBSID() { return this.patientLookupForm.get('HBSID'); }
+  get patientLookUpOption() { return this.patientLookupForm.get('patientLookUpOption'); }
+  get dob() { return this.patientLookupForm.get('dob'); }
+  get zipCode() { return this.patientLookupForm.get('zipCode'); }
+  get gender() { return this.patientLookupForm.get('gender'); }
+  get addressline1() { return this.patientLookupForm.get('addressline1'); }
+  get addressline2() { return this.patientLookupForm.get('addressline2'); }
+  get city() { return this.patientLookupForm.get('city'); }
+  get state() { return this.patientLookupForm.get('state'); }
+  get phone() { return this.patientLookupForm.get('phone'); }
+  get NPI() { return this.patientLookupForm.get('NPI'); }
+
+  ngOnDestroy() {
+    if (this.modalService.hasOpenModals()) {
+      this.close();
+    }
+
+  }
+
+  onItemChange(value){
+    console.log(" Value is : ", value );
+    this.selectedMultiplePatientProfileId = value;
   }
 
 }

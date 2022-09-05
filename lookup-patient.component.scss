@@ -1,0 +1,304 @@
+
+.patientLookupForm {
+  .lookup-heading {
+    height: 34px;
+    width: 260px;
+    color: #333333;
+    font-family: Helvetica;
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 0;
+    margin: 0px;
+  }
+
+
+.patient-info{
+    height: 17px;
+    width: 841px;
+    color: #333333;
+    font-family: Helvetica;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 2em;
+    margin: 0px;
+}
+.hint{
+  height: 18px;
+  width: 140.05px;
+  color: #767676;
+  font-family: Helvetica;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 18px;
+}
+#no-demo {
+  font-weight: normal;
+  width: 300px;
+}
+#yes-demo {
+  font-weight: normal;
+  width: 200px;
+}
+.demoList{
+  padding-left: 57px;
+}
+.form_fieldset_group input[type=radio] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+.form_fieldset_radio input+label {
+  display: inline-block;
+  font-weight: normal;
+  position: relative;
+  font-size: 14px;
+}
+.form_fieldset_radio input[type=radio]+label.error:before {
+    border: 2px solid #CC0000;
+    background-color: #FAE6E6;
+}
+
+.form_fieldset_radio input+label:before {
+  content: '';
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+  border: 2px solid #000;
+  margin-right: 10px;
+  position: relative;
+  top: 6px;
+  border-radius: 14px;
+}
+.form_fieldset_radio input:checked+label:after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  padding: 2px;
+  background-color: #000;
+  margin-right: 10px;
+  border-radius: 14px;
+  position: absolute;
+  left: 4px;
+  top: 10px;
+}
+
+
+ .patientID {
+  padding: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  width: 200px;
+ }
+
+
+ .state-dropdown{
+  width: 280px;
+}
+@media screen and (min-width: 500px) {
+.cvslookup{
+  .cvstextfield{
+    padding: 0px;
+    max-width: 192px;
+    margin: 0px 8.5px;
+    input{
+        width: 192px;
+      }
+    }
+   .cvsZipCode {
+    max-width:100px;
+     input{
+     max-width:100px;
+     }
+   }
+  }
+}
+#npi-number{
+  width: 300px;
+}
+#msgBanner {
+  margin-top:27px;
+}
+@media screen and (min-width: 500px) {
+.search-Button {
+  margin-left: 2px;
+    margin-top: 31px;
+  }
+  input[type=submit] {
+  height: 48px;
+  width: 250px;
+  }
+}
+.clear-link{
+  margin-left: 72px;
+  margin-top: 31px;
+}
+.line {
+  box-sizing: border-box;
+  height: 160px;
+  width: 2px;
+  border: 1px solid #979797;
+}
+.advanced-search {
+  height: 38px;
+  width: 212px;
+  color: #333333;
+  font-family: Helvetica;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 19px;
+  margin-left: 30px;
+}
+.advanced-search-may {
+    height: 68px;
+    // width: 212px;
+    color: #333333;
+    font-family: Helvetica;
+    font-size: 14px;
+    line-height: 17px;
+    margin-left: 30px;
+}
+// .start-search {
+//     width: 122px;
+// }
+#appContainer {
+ margin-left:-10px
+}
+}
+#Demo-modal{
+  width: 110%;
+  border-radius: 0 rem;
+}
+.noPatientDemoClose {
+  margin-left: 21.6cm;
+  margin-top: 30px;
+  margin-bottom: -12px;
+  color: #000000;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+.noPatientDemoTitile {
+  max-height: 95px;
+  width: 732px;
+  color: #000000;
+  font-family: Helvetica;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 29px;
+  margin-left: 3.4rem;
+  }
+
+.noPatientDemoBody {
+    height: 52px;
+    width: 751px;
+    color: #000000;
+    font-family: Helvetica;
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 22px;
+    margin-left: 2.5rem;
+}
+.noPatientDemoBody1{
+      height: 5px;
+      width: 751px;
+    color: #000000;
+    font-family: Helvetica;
+    font-size: 17px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 22px;
+    margin-left: 2.5rem;
+}
+.modal-notesList{
+    height: 110px;
+    width: 751px;
+    color: #000000;
+    font-family: Helvetica;
+    font-size: 17px;
+    letter-spacing: 0;
+    line-height: 22px;
+    margin-left: 2.5rem;
+}
+
+.modal-profile-list{
+  height: 130px;
+  width: 751px;
+  color: #000000;
+  font-family: Helvetica;
+  font-size: 17px;
+  letter-spacing: 0;
+  line-height: 22px;
+  margin-left: 2.5rem;
+  overflow: auto;
+  span {
+    font-weight: bold;
+  }
+}
+.note1{
+  height: 80px;
+}
+.noPatientDemoSubmit {
+  border-style:none;
+
+}
+.advSearch {
+  width: 210px;
+  margin-left: -49px;
+  margin-right: 372px;
+  font-size: 14px;
+}
+
+.lookupPatient{
+  font-size: 14px;
+  background-color: transparent;
+  color: #cc0000;
+  border-color: #cc0000
+}
+
+.close-mark {
+  color: #000000;
+  border: none;
+  background: none;
+  margin-left: 18.6cm;
+  outline: none;
+}
+
+.close-img{
+  max-width: 65%;
+  margin-top: -64px;
+  outline: none;
+}
+
+.view-patient-profile-btn {
+  width: 210px;
+  margin-left: -25px;
+  margin-right: 530px;
+  font-size: 14px;
+}
+
+#run-search-again{
+  height: 18px;
+  width: 34px;
+  color: #ff0000;
+  font-family: Helvetica;
+  font-size: 14px;
+  line-height: 18px;
+  text-decoration: underline;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
+.modal-body-header {
+  width: 751px;
+  color: #000000;
+  font-family: Helvetica;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 22px;
+  margin-left: 2.5rem;
+}
